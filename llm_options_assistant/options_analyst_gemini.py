@@ -48,7 +48,7 @@ Always start by introducing yourself and explaining what you can do.
 
 def generate_iv_surface(date_str):
     """Generate IV surface for a given date using the CVAE model (best_model_2025)"""
-    print(f"\n🔄 Generating IV surface for {date_str}...")
+    print(f"\n Generating IV surface for {date_str}...")
     print("This may take 30-60 seconds...\n")
     
     script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -94,7 +94,7 @@ def generate_iv_surface(date_str):
         mean_df = pd.read_csv(mean_csv, index_col='Maturity')
         median_df = pd.read_csv(median_csv, index_col='Maturity')
         
-        print(f"✅ Surface generated successfully!")
+        print(f" Surface generated successfully!")
         print(f"   Spot: {spot_price:.2f}, Valid surfaces: {valid_surfaces}\n")
         
         return {
@@ -161,7 +161,7 @@ def main():
     # Check for Gemini API key
     api_key = os.getenv('GEMINI_API_KEY')
     if not api_key:
-        print("❌ Error: GEMINI_API_KEY environment variable not set")
+        print(" Error: GEMINI_API_KEY environment variable not set")
         print("\nGet your FREE API key:")
         print("  1. Go to: https://aistudio.google.com/app/apikey")
         print("  2. Click 'Create API Key'")
@@ -181,7 +181,7 @@ def main():
     
     # Print welcome message
     print("\n" + "="*70)
-    print("🤖 NIFTY 50 OPTIONS ANALYSIS ASSISTANT (Powered by Google Gemini)")
+    print(" NIFTY 50 OPTIONS ANALYSIS ASSISTANT (Powered by Google Gemini)")
     print("="*70)
     print("\nInitializing AI analyst...")
     
@@ -191,7 +191,7 @@ def main():
         greeting = response.text
         print(f"\n{greeting}\n")
     except Exception as e:
-        print(f"❌ Error connecting to Gemini: {e}")
+        print(f" Error connecting to Gemini: {e}")
         print("\nMake sure:")
         print("  1. Your API key is valid")
         print("  2. You have internet connection")
@@ -210,7 +210,7 @@ def main():
                 continue
             
             if user_input.lower() in ['quit', 'exit', 'bye']:
-                print("\n👋 Goodbye! Happy trading!\n")
+                print("\n Goodbye! Happy trading!\n")
                 break
             
             # Get LLM response
@@ -241,17 +241,17 @@ def main():
                             print(f"\nAssistant: {analysis}\n")
                         else:
                             error_msg = f"Failed to generate surface: {surface_data['message']}"
-                            print(f"\n❌ {error_msg}\n")
+                            print(f"\n {error_msg}\n")
                     except ValueError:
-                        print("\n❌ Invalid date format. Please use YYYY-MM-DD\n")
+                        print("\n Invalid date format. Please use YYYY-MM-DD\n")
             else:
                 print(f"\nAssistant: {assistant_message}\n")
         
         except KeyboardInterrupt:
-            print("\n\n👋 Goodbye! Happy trading!\n")
+            print("\n\n Goodbye! Happy trading!\n")
             break
         except Exception as e:
-            print(f"\n❌ Error: {e}\n")
+            print(f"\n Error: {e}\n")
             continue
 
 

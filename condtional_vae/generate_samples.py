@@ -196,7 +196,7 @@ def main():
     
     print(f"\n1. Loading model...")
     model, checkpoint, config = load_model(model_path, device)
-    print(f"   ✓ Model loaded from epoch {checkpoint['epoch']}")
+    print(f"    Model loaded from epoch {checkpoint['epoch']}")
     
     param_mean = checkpoint['param_mean'].to(device)
     param_std = checkpoint['param_std'].to(device)
@@ -233,7 +233,7 @@ def main():
         for i, var_name in enumerate(cond_var_names):
             print(f"     {var_name:25s}: {conditioning_used[i]:+.3f}")
     
-    print(f"\n   ✓ Generated samples: {samples.shape}")
+    print(f"\n    Generated samples: {samples.shape}")
     
     # Compute statistics
     print(f"\n3. Sample statistics:")
@@ -266,7 +266,7 @@ def main():
         'feller_satisfaction': feller_satisfied
     }, output_path)
     
-    print(f"\n   ✓ Samples saved: {output_path}")
+    print(f"\n    Samples saved: {output_path}")
     
     # Create visualization
     print(f"\n4. Creating visualization...")
@@ -302,7 +302,7 @@ def main():
     
     plot_path = output_path.replace('.pt', '.png')
     plt.savefig(plot_path, dpi=300, bbox_inches='tight')
-    print(f"   ✓ Visualization saved: {plot_path}")
+    print(f"    Visualization saved: {plot_path}")
     
     print("\n" + "="*80)
     print("GENERATION COMPLETE!")

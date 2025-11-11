@@ -94,13 +94,13 @@ def fetch_market_data(target_date, buffer_days=365):
             vix_data = vix_data.dropna()
             
             if len(vix_data) > 0:
-                print(f"    ✓ India VIX: {len(vix_data)} days")
+                print(f"     India VIX: {len(vix_data)} days")
             else:
                 raise ValueError("No valid India VIX data after cleaning")
         else:
             raise ValueError("No India VIX data available")
     except Exception as e:
-        print(f"    ✗ India VIX fetch failed: {e}")
+        print(f"     India VIX fetch failed: {e}")
         sys.exit(1)
     
     # Fetch other market data
@@ -127,16 +127,16 @@ def fetch_market_data(target_date, buffer_days=365):
     yield_raw = yf.download('^TNX', start=fetch_start, end=fetch_end, progress=False)
     yield_data = pd.DataFrame({'us_10y_yield': get_close_series(yield_raw)})
     
-    print(f"    ✓ USD/INR: {len(usdinr_data)} days")
-    print(f"    ✓ Crude Oil: {len(crude_data)} days")
-    print(f"    ✓ US 10Y Yield: {len(yield_data)} days")
+    print(f"     USD/INR: {len(usdinr_data)} days")
+    print(f"     Crude Oil: {len(crude_data)} days")
+    print(f"     US 10Y Yield: {len(yield_data)} days")
     
     # Combine all market data
     combined_data = pd.concat([vix_data, usdinr_data, crude_data, yield_data], axis=1).dropna()
-    print(f"✓ Combined market data: {len(combined_data)} days")
+    print(f" Combined market data: {len(combined_data)} days")
     
     if len(combined_data) == 0:
-        print(f"  ✗ Warning: No overlapping dates found in market data")
+        print(f"   Warning: No overlapping dates found in market data")
         print(f"    Date range requested: {fetch_start} to {fetch_end}")
         print(f"    VIX range: {vix_data.index.min() if len(vix_data) > 0 else 'N/A'} to {vix_data.index.max() if len(vix_data) > 0 else 'N/A'}")
         print(f"    USD/INR range: {usdinr_data.index.min() if len(usdinr_data) > 0 else 'N/A'} to {usdinr_data.index.max() if len(usdinr_data) > 0 else 'N/A'}")
@@ -149,7 +149,7 @@ def fetch_market_data(target_date, buffer_days=365):
     combined_data['crude_oil_7d_mean'] = combined_data['crude_oil'].rolling(7, min_periods=1).mean()
     combined_data['crude_oil_30d_mean'] = combined_data['crude_oil'].rolling(30, min_periods=1).mean()
     combined_data['usdinr_quarterly_mean'] = combined_data['usdinr'].rolling(90, min_periods=1).mean()
-    print("✓ Rolling features computed")
+    print(" Rolling features computed")
     
     return combined_data
 
@@ -171,26 +171,26 @@ def get_conditioning_vector(combined_data, target_date, unrest_index, config):
     
     # Check if combined_data is empty
     if len(combined_data) == 0:
-        print(f"  ✗ Error: No market data available for {target_date}")
+        print(f"   Error: No market data available for {target_date}")
         print(f"  → Possible causes: Market closed, data source issue, or date range mismatch")
         sys.exit(1)
     
     target_ts = pd.Timestamp(target_date)
     if target_ts in combined_data.index:
         row = combined_data.loc[target_ts]
-        print(f"  ✓ Exact match found for {target_date}")
+        print(f"   Exact match found for {target_date}")
     else:
         # Get nearest available date
         nearest_indices = combined_data.index.get_indexer([target_ts], method='nearest')
         if nearest_indices[0] == -1 or len(combined_data) == 0:
-            print(f"  ✗ Error: No valid data to extract features from")
+            print(f"   Error: No valid data to extract features from")
             sys.exit(1)
         
         nearest_idx = nearest_indices[0]
         nearest_date = combined_data.index[nearest_idx]
         row = combined_data.loc[nearest_date]
         date_diff = abs((nearest_date - target_ts).days)
-        print(f"  ⚠ Using nearest date: {nearest_date.date()} (diff: {date_diff} days)")
+        print(f"   Using nearest date: {nearest_date.date()} (diff: {date_diff} days)")
     
     # Build raw conditioning vector in config order
     # Order: crude_oil_30d_mean, crude_oil_7d_mean, unrest_index_yearly, crude_oil,
@@ -227,7 +227,7 @@ def load_unrest_index(target_date, gdelt_file):
     print("\nLoading GDELT unrest index data...")
     
     if not os.path.exists(gdelt_file):
-        print(f"  ⚠ File not found: {gdelt_file}")
+        print(f"   File not found: {gdelt_file}")
         print(f"    → Using default value (training mean): {DEFAULT_UNREST_INDEX:.6f}")
         return DEFAULT_UNREST_INDEX
     
@@ -238,14 +238,14 @@ def load_unrest_index(target_date, gdelt_file):
     
     # Check if target date is within training range
     if target_date < TRAINING_DATA_START or target_date > TRAINING_DATA_END:
-        print(f"    ⚠ Target date {target_date} is outside training range ({TRAINING_DATA_START} to {TRAINING_DATA_END})")
+        print(f"     Target date {target_date} is outside training range ({TRAINING_DATA_START} to {TRAINING_DATA_END})")
         print(f"    → Using default value: {DEFAULT_UNREST_INDEX:.6f}")
         return DEFAULT_UNREST_INDEX
     
     # Try to find exact match
     if target_ts in gdelt_df.index:
         unrest = float(gdelt_df.loc[target_ts, 'unrest_index_yearly'])
-        print(f"    ✓ Found for {target_date}: {unrest:.6f}")
+        print(f"     Found for {target_date}: {unrest:.6f}")
         return unrest
     else:
         # Find nearest date
@@ -255,11 +255,11 @@ def load_unrest_index(target_date, gdelt_file):
         
         if date_diff <= 7:
             unrest = float(gdelt_df.iloc[nearest_idx]['unrest_index_yearly'])
-            print(f"    ⚠ Using nearest date: {nearest_date.date()} (diff: {date_diff} days)")
-            print(f"    ✓ Unrest index: {unrest:.6f}")
+            print(f"     Using nearest date: {nearest_date.date()} (diff: {date_diff} days)")
+            print(f"     Unrest index: {unrest:.6f}")
             return unrest
         else:
-            print(f"    ⚠ Nearest date {nearest_date.date()} is {date_diff} days away")
+            print(f"     Nearest date {nearest_date.date()} is {date_diff} days away")
             print(f"    → Using default value: {DEFAULT_UNREST_INDEX:.6f}")
             return DEFAULT_UNREST_INDEX
 
@@ -366,9 +366,9 @@ def main():
         norm_stats = torch.load(norm_stats_path, map_location=DEVICE, weights_only=False)
         cond_raw_mean = norm_stats['raw_mean'].to(DEVICE)
         cond_raw_std = norm_stats['raw_std'].to(DEVICE)
-        print("✓ Loaded conditioning normalization stats")
+        print(" Loaded conditioning normalization stats")
     else:
-        print("✗ Normalization stats file not found!")
+        print(" Normalization stats file not found!")
         sys.exit(1)
     
     # Load model
@@ -379,7 +379,7 @@ def main():
     ).to(DEVICE)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
-    print("✓ Model loaded")
+    print(" Model loaded")
     
     # ========================================================================
     # Fetch Data and Prepare Conditioning Variables
@@ -395,13 +395,13 @@ def main():
                 args.spot = float(nifty_data['Close'].iloc[-1])
                 actual_date = nifty_data.index[-1].date()
                 if actual_date == target_date:
-                    print(f"  ✓ NIFTY 50 spot: {args.spot:.2f}")
+                    print(f"   NIFTY 50 spot: {args.spot:.2f}")
                 else:
-                    print(f"  ✓ NIFTY 50 spot (nearest: {actual_date}): {args.spot:.2f}")
+                    print(f"   NIFTY 50 spot (nearest: {actual_date}): {args.spot:.2f}")
             else:
                 raise ValueError("No NIFTY data available")
         except Exception as e:
-            print(f"  ✗ Error: {e}")
+            print(f"   Error: {e}")
             print(f"  → Using default: 21000.0")
             args.spot = 21000.0
     else:
@@ -427,7 +427,7 @@ def main():
     conditioning_tensor = conditioning_normalized.to(DEVICE)
     conditioning_batch = conditioning_tensor.unsqueeze(0).repeat(args.n_samples, 1)
     
-    print(f"\n✓ Conditioning batch prepared: shape {conditioning_batch.shape}")
+    print(f"\n Conditioning batch prepared: shape {conditioning_batch.shape}")
     
     # ========================================================================
     # Generate Heston Parameters
@@ -447,7 +447,7 @@ def main():
         
         params_np = params_original.cpu().numpy()
     
-    print(f"✓ Generated {len(params_np)} parameter sets")
+    print(f" Generated {len(params_np)} parameter sets")
     
     # Print parameter statistics
     param_names = ['kappa', 'theta', 'sigma_v', 'rho', 'v0']
@@ -468,7 +468,7 @@ def main():
             surfaces.append(iv_surface)
     
     if len(surfaces) == 0:
-        print("✗ No valid surfaces generated!")
+        print(" No valid surfaces generated!")
         sys.exit(1)
     
     surfaces_array = np.array(surfaces)
@@ -477,7 +477,7 @@ def main():
     p5_surface = np.nanpercentile(surfaces_array, 5, axis=0)
     p95_surface = np.nanpercentile(surfaces_array, 95, axis=0)
     
-    print(f"✓ Valid surfaces: {len(surfaces)}/{args.n_samples} ({len(surfaces)/args.n_samples*100:.1f}%)")
+    print(f" Valid surfaces: {len(surfaces)}/{args.n_samples} ({len(surfaces)/args.n_samples*100:.1f}%)")
     print(f"\nIV Surface Summary Statistics:")
     print(f"  Mean IV (overall):   {np.nanmean(mean_surface) * 100:.2f}%")
     print(f"  Median IV (overall): {np.nanmean(median_surface) * 100:.2f}%")
@@ -507,7 +507,7 @@ def main():
         'q': args.q
     }, os.path.join(output_dir, 'iv_surfaces.pt'))
     
-    print(f"\n✓ Saved to: {os.path.join(output_dir, 'iv_surfaces.pt')}")
+    print(f"\n Saved to: {os.path.join(output_dir, 'iv_surfaces.pt')}")
     
     # Save CSV matrices
     maturity_labels = [f'{int(round(T*12))}M' for T in T_GRID]
@@ -519,7 +519,7 @@ def main():
     mean_iv_df.to_csv(os.path.join(output_dir, 'mean_iv_surface.csv'))
     median_iv_df.to_csv(os.path.join(output_dir, 'median_iv_surface.csv'))
     
-    print(f"✓ Saved CSV matrices to output directory")
+    print(f" Saved CSV matrices to output directory")
     
     # ========================================================================
     # Generate Visualizations
@@ -580,14 +580,14 @@ def main():
     plt.savefig(os.path.join(output_dir, 'iv_smiles.png'), dpi=300, bbox_inches='tight')
     plt.close()
     
-    print(f"  ✓ Generated 3 plots")
+    print(f"   Generated 3 plots")
     
     # ========================================================================
     # Summary
     # ========================================================================
     
     print(f"\n{'='*80}")
-    print(f"✓ GENERATION COMPLETE!")
+    print(f" GENERATION COMPLETE!")
     print(f"{'='*80}")
     print(f"Date:                    {target_date}")
     print(f"Spot price:              {args.spot:.2f}")

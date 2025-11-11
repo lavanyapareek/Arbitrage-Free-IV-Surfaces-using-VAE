@@ -499,7 +499,7 @@ for date_idx, date in enumerate(tqdm(dates, desc="Processing")):
 total_time = time.time() - start_time
 
 print("\n" + "=" * 80)
-print(f"\n✅ Processing complete!")
+print(f"\n Processing complete!")
 print(f"   Total time: {total_time/60:.1f} minutes")
 print(f"   Successful: {len(clean_surfaces)}/{len(dates)} ({len(clean_surfaces)/len(dates)*100:.1f}%)")
 
@@ -523,7 +523,7 @@ if len(clean_surfaces) > 0:
     print(f"     Mean: {all_ivs.mean():.4f} ± {all_ivs.std():.4f}")
     print(f"     Range: [{all_ivs.min():.4f}, {all_ivs.max():.4f}]")
     print(f"     Avg data points/surface: {np.mean(all_n_points):.0f}")
-    print(f"     All arbitrage-free: ✓")
+    print(f"     All arbitrage-free: ")
 
 # ============================================================================
 # Save Results
@@ -554,12 +554,12 @@ output_file = 'nifty_advanced_surfaces.pickle'
 with open(output_file, 'wb') as f:
     pickle.dump(output_data, f)
 
-print(f"   ✓ Saved: {output_file}")
-print(f"   ✓ Contains: {len(clean_surfaces)} arbitrage-free surfaces")
-print(f"   ✓ Format: {len(CANONICAL_MATURITIES)} maturities × {len(CANONICAL_LOGM)} strikes (symmetric grid)")
+print(f"    Saved: {output_file}")
+print(f"    Contains: {len(clean_surfaces)} arbitrage-free surfaces")
+print(f"    Format: {len(CANONICAL_MATURITIES)} maturities × {len(CANONICAL_LOGM)} strikes (symmetric grid)")
 
 print("\n" + "=" * 80)
-print("✅ ADVANCED SURFACES CREATED!")
+print(" ADVANCED SURFACES CREATED!")
 print("=" * 80)
 print(f"\nNext: Run Heston calibration on {len(clean_surfaces)} clean surfaces")
 print(f"Expected time: ~{len(clean_surfaces) * 3.7 / 60:.0f} minutes")

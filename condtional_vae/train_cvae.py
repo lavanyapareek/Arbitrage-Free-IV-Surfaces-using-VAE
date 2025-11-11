@@ -54,23 +54,23 @@ print("\n1. Loading data...")
 # Load Heston parameters
 heston_file = os.path.join(script_dir, config['data']['heston_params_file'])
 heston_params = torch.load(heston_file)
-print(f"   ✓ Heston parameters: {heston_params.shape}")
+print(f"    Heston parameters: {heston_params.shape}")
 print(f"     Format: {config['data']['param_order']}")
 
 # Load conditioning variables
 cond_file = os.path.join(script_dir, config['data']['conditioning_file'])
 cond_df = pd.read_csv(cond_file)
-print(f"   ✓ Conditioning variables: {cond_df.shape}")
+print(f"    Conditioning variables: {cond_df.shape}")
 
 # Extract dates
 date_col = config['data']['date_column']
 dates = pd.to_datetime(cond_df[date_col])
-print(f"   ✓ Date range: {dates.min()} to {dates.max()}")
+print(f"    Date range: {dates.min()} to {dates.max()}")
 
 # Verify alignment
 assert len(dates) == len(heston_params), \
     f"Date mismatch: {len(dates)} dates vs {len(heston_params)} params"
-print(f"   ✓ Data alignment verified: {len(dates)} samples")
+print(f"    Data alignment verified: {len(dates)} samples")
 
 # Extract conditioning variables
 cond_var_names = config['data']['conditioning_vars']
@@ -90,7 +90,7 @@ for i, var_name in enumerate(cond_var_names):
 
 # Sort by date for temporal split
 df_merged = df_merged.sort_values('date').reset_index(drop=True)
-print(f"   ✓ Data sorted by date for temporal split")
+print(f"    Data sorted by date for temporal split")
 
 # ============================================================================
 # 3. Apply Transformations to Parameters
@@ -114,7 +114,7 @@ for idx in [0, 1, 2, 4]:
 # rho: atanh transform (map from [-1, 1] to [-inf, inf])
 transformed_params[:, 3] = torch.atanh(params_sorted[:, 3] * 0.999)  # Clip to avoid ±1
 
-print("   ✓ Transforms applied:")
+print("    Transforms applied:")
 print("     - kappa, theta, sigma_v, v0: log")
 print("     - rho: atanh")
 
@@ -123,7 +123,7 @@ param_mean = transformed_params.mean(dim=0)
 param_std = transformed_params.std(dim=0)
 normalized_params = (transformed_params - param_mean) / param_std
 
-print(f"   ✓ Parameters normalized to N(0,1)")
+print(f"    Parameters normalized to N(0,1)")
 
 # Extract conditioning from sorted dataframe
 conditioning_sorted = torch.tensor(
@@ -131,7 +131,7 @@ conditioning_sorted = torch.tensor(
     dtype=torch.float32
 )
 
-print(f"   ✓ Conditioning variables: already z-normalized (as-is)")
+print(f"    Conditioning variables: already z-normalized (as-is)")
 
 # ============================================================================
 # 4. Temporal Train/Val Split
@@ -151,11 +151,11 @@ val_params = normalized_params[n_train:]
 val_cond = conditioning_sorted[n_train:]
 val_dates = df_merged['date'].iloc[n_train:]
 
-print(f"   ✓ Train: {len(train_params)} samples ({train_dates.min()} to {train_dates.max()})")
+print(f"    Train: {len(train_params)} samples ({train_dates.min()} to {train_dates.max()})")
 if len(val_params) > 0:
-    print(f"   ✓ Val:   {len(val_params)} samples ({val_dates.min()} to {val_dates.max()})")
+    print(f"    Val:   {len(val_params)} samples ({val_dates.min()} to {val_dates.max()})")
 else:
-    print(f"   ✓ Val:   {len(val_params)} samples (no validation — train_split == 1)")
+    print(f"    Val:   {len(val_params)} samples (no validation — train_split == 1)")
 
 # Create data loaders
 train_dataset = TensorDataset(train_params, train_cond)
@@ -170,7 +170,7 @@ if has_val:
 else:
     val_dataset = None
     val_loader = None
-    print("   ✓ Validation disabled (no validation samples)")
+    print("    Validation disabled (no validation samples)")
 
 # ============================================================================
 # 5. Initialize Model
@@ -195,7 +195,7 @@ model = ConditionalVAE_SingleHeston(
 total_params = sum(p.numel() for p in model.parameters())
 trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
-print(f"   ✓ Model initialized")
+print(f"    Model initialized")
 print(f"     Total parameters: {total_params:,}")
 print(f"     Trainable parameters: {trainable_params:,}")
 print(f"     Architecture: {config['architecture']['hidden_dims']}")
@@ -428,13 +428,13 @@ torch.save({
     'history': history,
     'config': config
 }, final_model_path)
-print(f"✓ Final model saved: {final_model_path}")
+print(f" Final model saved: {final_model_path}")
 
 # Save training history
 history_df = pd.DataFrame(history)
 history_path = os.path.join(results_dir, config['output']['training_history'])
 history_df.to_csv(history_path, index=False)
-print(f"✓ Training history saved: {history_path}")
+print(f" Training history saved: {history_path}")
 
 # Plot training curves
 fig, axes = plt.subplots(2, 3, figsize=(18, 10))
@@ -497,6 +497,6 @@ plt.tight_layout()
 
 plot_path = os.path.join(results_dir, config['output']['loss_plots'])
 plt.savefig(plot_path, dpi=300, bbox_inches='tight')
-print(f"✓ Training plots saved: {plot_path}")
+print(f" Training plots saved: {plot_path}")
 
 print(f"\nAll results saved to: {results_dir}")

@@ -1,6 +1,6 @@
 # Setup Guide for GitHub Repository
 
-## 🚨 BEFORE PUSHING TO GITHUB
+## BEFORE PUSHING TO GITHUB
 
 ### Step 1: Remove Sensitive Files
 
@@ -102,7 +102,7 @@ git branch -M main
 git push -u origin main
 ```
 
-## 📋 Pre-Push Checklist
+## Pre-Push Checklist
 
 - [ ] `.gitignore` file created and configured
 - [ ] `api.json` removed (template provided)
@@ -115,7 +115,7 @@ git push -u origin main
 - [ ] Sensitive information removed from notebooks
 - [ ] License file added (if applicable)
 
-## 🔒 Security Best Practices
+## Security Best Practices
 
 ### For Users Cloning Your Repo
 
@@ -150,7 +150,7 @@ git push origin --force --all
 
 3. **Create new keys** and update locally
 
-## 📦 Optional: Git LFS for Large Files
+## Optional: Git LFS for Large Files
 
 If you need to include large model files:
 
@@ -172,7 +172,7 @@ git add .gitattributes
 git commit -m "Configure Git LFS"
 ```
 
-## 🌐 Alternative: External Data Hosting
+## Alternative: External Data Hosting
 
 For very large files, consider:
 
@@ -193,7 +193,7 @@ Large data files are hosted externally:
 3. Verify file structure matches documentation
 ```
 
-## ✅ Final Verification
+## Final Verification
 
 Before pushing:
 
@@ -209,7 +209,7 @@ git log --all --full-history --source -- api.json
 git log --all --full-history --source -- "*credentials*.json"
 ```
 
-## 🆘 Troubleshooting
+## Troubleshooting
 
 **Problem**: "File too large" error
 - **Solution**: Add to .gitignore or use Git LFS
@@ -220,7 +220,7 @@ git log --all --full-history --source -- "*credentials*.json"
 **Problem**: Repository too large
 - **Solution**: Remove large files, use Git LFS, or host externally
 
-## 📚 Resources
+## Resources
 
 - [GitHub .gitignore templates](https://github.com/github/gitignore)
 - [Git LFS documentation](https://git-lfs.github.com/)

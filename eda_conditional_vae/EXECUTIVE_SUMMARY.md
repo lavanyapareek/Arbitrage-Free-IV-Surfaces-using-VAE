@@ -5,10 +5,10 @@
 **We have strong statistical evidence to implement a Conditional Variational Autoencoder (CVAE) that learns Heston parameter distributions conditioned on 8 market/macro variables.**
 
 ### **Key Numbers:**
-- ✅ **Strongest correlation**: r = 0.681 (v₀ ↔ India VIX)
-- ✅ **85% of relationships** are statistically significant (p < 0.05)
-- ✅ **Mutual information** up to 0.97 (non-linear dependencies)
-- ✅ **All 5 Heston parameters** show significant conditioning dependencies
+-  **Strongest correlation**: r = 0.681 (v₀ ↔ India VIX)
+-  **85% of relationships** are statistically significant (p < 0.05)
+-  **Mutual information** up to 0.97 (non-linear dependencies)
+-  **All 5 Heston parameters** show significant conditioning dependencies
 
 ---
 
@@ -41,7 +41,7 @@
 
 ## Key Findings
 
-### 1. **Strong Correlations Exist** 🔗
+### 1. **Strong Correlations Exist** 
 
 | Parameter | Best Predictor | Correlation | p-value |
 |-----------|---------------|-------------|---------|
@@ -51,14 +51,14 @@
 | **ρ** | Crude Oil | **-0.425** | < 0.001 |
 | **θ** | Unrest Index | **+0.388** | < 0.001 |
 
-### 2. **Statistical Significance is High** 📊
+### 2. **Statistical Significance is High** 
 
 Out of 40 possible parameter-variable pairs:
 - **34 pairs (85%)** are significant at p < 0.05
 - **29 pairs (72.5%)** are significant at p < 0.01
 - **24 pairs (60%)** are significant at p < 0.001
 
-### 3. **Non-Linear Dependencies Detected** 🌀
+### 3. **Non-Linear Dependencies Detected** 
 
 Mutual information analysis reveals:
 - **USD/INR**: MI = 0.97 (extremely high)
@@ -76,7 +76,7 @@ Mutual information analysis reveals:
 ```python
 # Standard VAE ignores market conditions
 vae = VAE()
-params = vae.sample()  # Random, not market-aware ❌
+params = vae.sample()  # Random, not market-aware 
 ```
 
 ### **Solution: Conditional VAE**
@@ -87,7 +87,7 @@ params = cvae.sample(conditions={
     'india_vix': 2.5,      # High volatility regime
     'crude_oil': -1.5,     # Low oil prices
     'unrest_index': 2.0    # High uncertainty
-})  # Generates regime-specific parameters ✅
+})  # Generates regime-specific parameters 
 ```
 
 ---
@@ -96,23 +96,23 @@ params = cvae.sample(conditions={
 
 ### **Use Cases Enabled:**
 
-1. **Stress Testing** 🚨
+1. **Stress Testing** 
    - Generate IV surfaces under extreme market conditions
    - Example: "What if VIX spikes to 40 AND oil crashes?"
 
-2. **Scenario Analysis** 📈
+2. **Scenario Analysis** 
    - Target specific market regimes
    - Example: "Post-election scenarios with high uncertainty"
 
-3. **Risk Management** 🛡️
+3. **Risk Management** 
    - Conditional tail risk assessment
    - Example: "Risk profile during geopolitical crisis"
 
-4. **Forecasting** 🔮
+4. **Forecasting** 
    - Use predicted macro variables to forecast IV surfaces
    - Example: "Fed rate decision impact on IV surface"
 
-5. **Market Interpolation** 🔄
+5. **Market Interpolation** 
    - Smooth transitions between market regimes
    - Example: "Gradual shift from low to high vol regime"
 
@@ -139,15 +139,15 @@ Input: Heston Parameters θ (5D) + Conditions c (8D)
 ## Expected Benefits
 
 ### **Quantitative Improvements:**
-- 📉 **-15% to -25%** reduction in reconstruction loss
-- 📊 **Better out-of-sample** performance (leverages market context)
-- 🎯 **More realistic** samples (regime-aligned)
+-  **-15% to -25%** reduction in reconstruction loss
+-  **Better out-of-sample** performance (leverages market context)
+-  **More realistic** samples (regime-aligned)
 
 ### **Qualitative Improvements:**
-- 🔍 **Interpretable**: Explain generations via conditions
-- 🎛️ **Controllable**: Fine-grained scenario generation
-- 💼 **Practical**: Directly addresses business needs
-- 🧪 **Testable**: Easy to validate with historical regimes
+-  **Interpretable**: Explain generations via conditions
+-  **Controllable**: Fine-grained scenario generation
+-  **Practical**: Directly addresses business needs
+-  **Testable**: Easy to validate with historical regimes
 
 ---
 
@@ -155,10 +155,10 @@ Input: Heston Parameters θ (5D) + Conditions c (8D)
 
 | Approach | Pros | Cons | Verdict |
 |----------|------|------|---------|
-| **Standard VAE** | Simple | Ignores market context | ❌ Not recommended |
-| **Direct Regression** | Very simple | No uncertainty, single output | ❌ Too limited |
-| **Gaussian Process** | Uncertainty quantification | O(n³) complexity, limited dims | ❌ Doesn't scale |
-| **Conditional VAE** | Full distribution p(θ\|c), scalable, flexible | Slightly more complex | ✅ **RECOMMENDED** |
+| **Standard VAE** | Simple | Ignores market context |  Not recommended |
+| **Direct Regression** | Very simple | No uncertainty, single output |  Too limited |
+| **Gaussian Process** | Uncertainty quantification | O(n³) complexity, limited dims |  Doesn't scale |
+| **Conditional VAE** | Full distribution p(θ\|c), scalable, flexible | Slightly more complex |  **RECOMMENDED** |
 
 ---
 
@@ -203,16 +203,16 @@ Input: Heston Parameters θ (5D) + Conditions c (8D)
 
 ## Recommendation
 
-### ✅ **IMPLEMENT CONDITIONAL VAE**
+###  **IMPLEMENT CONDITIONAL VAE**
 
 **Confidence Level**: **HIGH**
 
 **Reasoning**:
-1. ✅ Strong statistical evidence (85% significant relationships)
-2. ✅ High information content (MI up to 0.97)
-3. ✅ Clear business value (stress testing, scenarios, forecasting)
-4. ✅ Proven architecture (literature support)
-5. ✅ Low risk (can fall back to standard VAE)
+1.  Strong statistical evidence (85% significant relationships)
+2.  High information content (MI up to 0.97)
+3.  Clear business value (stress testing, scenarios, forecasting)
+4.  Proven architecture (literature support)
+5.  Low risk (can fall back to standard VAE)
 
 **Expected Outcome**:
 - Significantly improved IV surface generation
@@ -224,12 +224,12 @@ Input: Heston Parameters θ (5D) + Conditions c (8D)
 
 ## Files Generated
 
-### **📊 Analysis & Documentation**
+### ** Analysis & Documentation**
 - `CONDITIONAL_VAE_CASE.md` - Full detailed case (14KB)
 - `EXECUTIVE_SUMMARY.md` - This document
 - `README.md` - Quick reference guide
 
-### **📈 Visualizations**
+### ** Visualizations**
 - `SUMMARY_INFOGRAPHIC.png` - One-page visual summary
 - `correlation_heatmap.png` - Pearson correlations
 - `mutual_information_heatmap.png` - Non-linear dependencies
@@ -238,13 +238,13 @@ Input: Heston Parameters θ (5D) + Conditions c (8D)
 - `distributions.png` - Parameter distributions
 - `scatter_*.png` - Top correlations (5 files)
 
-### **📁 Data Files**
+### ** Data Files**
 - `merged_data.csv` - Combined dataset (500 × 14)
 - `correlations.csv` - Correlation matrix
 - `mutual_information.csv` - MI scores
 - `p_values.csv` - Significance tests
 
-### **💻 Code**
+### ** Code**
 - `explore_data.py` - Main EDA script
 - `create_summary_infographic.py` - Visualization script
 
@@ -274,6 +274,6 @@ For implementation planning:
 
 ---
 
-**Status**: ✅ Analysis Complete - Ready for Implementation  
+**Status**:  Analysis Complete - Ready for Implementation  
 **Date**: November 2025  
 **Next Milestone**: CVAE Baseline Implementation

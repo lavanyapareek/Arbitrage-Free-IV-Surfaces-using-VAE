@@ -45,7 +45,7 @@ config_path = os.path.join(script_dir, 'config.json')
 with open(config_path, 'r') as f:
     config = json.load(f)
 
-print(f"   ✓ Config loaded")
+print(f"    Config loaded")
 print(f"   Input: {config['input']['surfaces_file']}")
 print(f"   Loss: Price RMSE + {config['loss_function']['wasserstein_weight']}*Wasserstein")
 print(f"   Two-stage: Fast → Wasserstein refinement")
@@ -314,20 +314,20 @@ def fit_single_heston(date, iv_surface, spot_price, prev_params=None):
             continue
     
     if best_result_stage1 is None:
-        print(f"      [Stage 1] ✗ Failed (all attempts returned None)")
+        print(f"      [Stage 1]  Failed (all attempts returned None)")
         return None
     
     if not best_result_stage1.success:
-        print(f"      [Stage 1] ⚠ Did not converge but using best attempt (loss: {best_loss_stage1:.6f})")
+        print(f"      [Stage 1]  Did not converge but using best attempt (loss: {best_loss_stage1:.6f})")
         # Continue anyway if loss is reasonable
         if best_loss_stage1 > 1.0:  # Very bad fit
-            print(f"      [Stage 1] ✗ Failed (loss too high)")
+            print(f"      [Stage 1]  Failed (loss too high)")
             return None
     
     stage1_time = time.time() - t0_stage1
     stage1_params = best_result_stage1.x
     
-    print(f"      [Stage 1] ✓ Complete in {stage1_time:.2f}s | Loss: {best_loss_stage1:.6f}")
+    print(f"      [Stage 1]  Complete in {stage1_time:.2f}s | Loss: {best_loss_stage1:.6f}")
     
     # ========================================================================
     # STAGE 2: Wasserstein Refinement
@@ -423,20 +423,20 @@ def fit_single_heston(date, iv_surface, spot_price, prev_params=None):
             final_params = result_stage2.x
             final_loss = result_stage2.fun
             n_iterations = result_stage2.nit if hasattr(result_stage2, 'nit') else 0
-            print(f"      [Stage 2] ✓ Converged in {n_iterations} iterations")
+            print(f"      [Stage 2]  Converged in {n_iterations} iterations")
         else:
             # Fall back to Stage 1
-            print(f"      [Stage 2] ⚠ Failed ({result_stage2.message}), using Stage 1 result")
+            print(f"      [Stage 2]  Failed ({result_stage2.message}), using Stage 1 result")
             final_params = stage1_params
             final_loss = best_loss_stage1
     except Exception as e:
-        print(f"      [Stage 2] ⚠ Exception: {str(e)[:50]}, using Stage 1 result")
+        print(f"      [Stage 2]  Exception: {str(e)[:50]}, using Stage 1 result")
         final_params = stage1_params
         final_loss = best_loss_stage1
     
     stage2_time = time.time() - t0_stage2
     
-    print(f"      [Stage 2] ✓ Complete in {stage2_time:.2f}s | Loss: {final_loss:.6f} | Calls: {stage2_calls[0]}")
+    print(f"      [Stage 2]  Complete in {stage2_time:.2f}s | Loss: {final_loss:.6f} | Calls: {stage2_calls[0]}")
     
     # Extract final parameters
     kappa, theta, sigma_v, rho, v0 = final_params
@@ -517,7 +517,7 @@ for day_idx, date in enumerate(tqdm(dates, desc="Calibrating")):
         total_stage1_time += result['stage1_time']
         total_stage2_time += result['stage2_time']
         
-        print(f"\n  ✓ Day {day_idx+1}/{len(dates)} ({date}): SUCCESS")
+        print(f"\n   Day {day_idx+1}/{len(dates)} ({date}): SUCCESS")
         print(f"    Fit error: {result['fit_error']:.6f} | Wasserstein: {result['wasserstein_distance']:.6f} | Feller: {result['feller_satisfied']}")
         print(f"    Stage 1: {result['stage1_time']:.1f}s | Stage 2: {result['stage2_time']:.1f}s")
         
@@ -527,7 +527,7 @@ for day_idx, date in enumerate(tqdm(dates, desc="Calibrating")):
             remaining = avg_time * (len(dates) - day_idx - 1)
             success_rate = len(all_results) / (day_idx + 1) * 100
             
-            print(f"\n  📊 CHECKPOINT at Day {day_idx+1}/{len(dates)}")
+            print(f"\n   CHECKPOINT at Day {day_idx+1}/{len(dates)}")
             print(f"    Success rate: {success_rate:.1f}% ({len(all_results)}/{day_idx+1})")
             print(f"    Avg time: {avg_time:.1f}s/day | Remaining: {remaining/60:.1f} min")
     
@@ -535,7 +535,7 @@ for day_idx, date in enumerate(tqdm(dates, desc="Calibrating")):
         # Failed but use previous params
         failed_days.append(date)
         if config['calibration']['use_previous_day_on_failure'] and prev_params is not None:
-            print(f"\n  ⚠ Day {day_idx+1}/{len(dates)} ({date}): Using previous day's params")
+            print(f"\n   Day {day_idx+1}/{len(dates)} ({date}): Using previous day's params")
             all_results.append({
                 'date': date,
                 'params': prev_params,
@@ -548,15 +548,15 @@ for day_idx, date in enumerate(tqdm(dates, desc="Calibrating")):
                 'fallback': True
             })
         else:
-            print(f"\n  ✗ Day {day_idx+1}/{len(dates)} ({date}): FAILED")
+            print(f"\n   Day {day_idx+1}/{len(dates)} ({date}): FAILED")
     else:
         failed_days.append(date)
-        print(f"\n  ✗ Day {day_idx+1}/{len(dates)} ({date}): FAILED (returned None)")
+        print(f"\n   Day {day_idx+1}/{len(dates)} ({date}): FAILED (returned None)")
 
 total_time = time.time() - start_time
 
 print("\n" + "=" * 80)
-print(f"\n⚡ Single Heston calibration complete!")
+print(f"\n Single Heston calibration complete!")
 print(f"   Total time: {total_time/60:.1f} minutes ({total_time:.0f} seconds)")
 print(f"   Successful: {len(all_results)}/{len(dates)}")
 print(f"   Failed: {len(failed_days)}")
@@ -590,7 +590,7 @@ output_file = os.path.join(script_dir, config['output']['pickle_file'])
 with open(output_file, 'wb') as f:
     pickle.dump(output_data, f)
 
-print(f"   ✓ Saved: {config['output']['pickle_file']}")
+print(f"    Saved: {config['output']['pickle_file']}")
 
 # ============================================================================
 # 6. Prepare VAE Training Tensor
@@ -613,7 +613,7 @@ print(f"   Ready for VAE training!")
 
 tensor_file = os.path.join(script_dir, config['output']['tensor_file'])
 torch.save(param_tensor, tensor_file)
-print(f"   ✓ Saved: {config['output']['tensor_file']}")
+print(f"    Saved: {config['output']['tensor_file']}")
 
 # ============================================================================
 # 7. Visualization
@@ -648,10 +648,10 @@ axes[1].grid(True, alpha=0.3)
 plt.tight_layout()
 plot_file = os.path.join(script_dir, config['output']['plot_file'])
 plt.savefig(plot_file, dpi=150, bbox_inches='tight')
-print(f"   ✓ Saved: {config['output']['plot_file']}")
+print(f"    Saved: {config['output']['plot_file']}")
 
 print("\n" + "=" * 80)
-print("✅ SINGLE HESTON CALIBRATION COMPLETE!")
+print(" SINGLE HESTON CALIBRATION COMPLETE!")
 print("=" * 80)
 print(f"\nOutput files:")
 print(f"  - {config['output']['pickle_file']}")

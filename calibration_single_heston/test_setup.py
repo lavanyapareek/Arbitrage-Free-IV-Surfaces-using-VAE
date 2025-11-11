@@ -26,7 +26,7 @@ config_path = os.path.join(script_dir, 'config.json')
 
 with open(config_path, 'r') as f:
     config = json.load(f)
-print("   ✓ Config loaded")
+print("    Config loaded")
 
 # Load data
 print("\n2. Loading NIFTY surfaces...")
@@ -42,7 +42,7 @@ test_date = dates[0]
 test_surface = surfaces[test_date]
 S = spot_prices[test_date]
 
-print(f"   ✓ Data loaded")
+print(f"    Data loaded")
 print(f"   Test date: {test_date}")
 print(f"   Spot price: {S:.2f}")
 print(f"   Surface shape: {test_surface['IV_surface'].shape}")
@@ -74,9 +74,9 @@ for mat_idx in range(len(T_grid)):
     all_tau.extend([tau_current] * len(valid_logm))
     all_IV.extend(valid_IV)
 
-print(f"   ✓ Total data points: {len(all_IV)}")
-print(f"   ✓ Maturities: {len(T_grid)}")
-print(f"   ✓ IV range: [{min(all_IV):.4f}, {max(all_IV):.4f}]")
+print(f"    Total data points: {len(all_IV)}")
+print(f"    Maturities: {len(T_grid)}")
+print(f"    IV range: [{min(all_IV):.4f}, {max(all_IV):.4f}]")
 
 # Test Heston model creation
 print("\n4. Testing Heston model...")
@@ -99,7 +99,7 @@ model = HestonModelQL(
     q=config['calibration']['q']
 )
 
-print(f"   ✓ Model created")
+print(f"    Model created")
 
 # Test pricing
 K_test = S * np.exp(0.0)  # ATM
@@ -107,9 +107,9 @@ tau_test = T_grid[0]
 
 try:
     price = model.price_call(S, K_test, tau_test)
-    print(f"   ✓ Test price (ATM, τ={tau_test:.3f}): {price:.4f}")
+    print(f"    Test price (ATM, τ={tau_test:.3f}): {price:.4f}")
 except Exception as e:
-    print(f"   ✗ Pricing failed: {e}")
+    print(f"    Pricing failed: {e}")
 
 # Test objective function components
 print("\n5. Testing objective function components...")
@@ -136,8 +136,8 @@ market_prices = np.array([
     for iv, lm, tau in zip(all_IV, all_logm, all_tau)
 ])
 
-print(f"   ✓ Market prices computed")
-print(f"   ✓ Price range: [{market_prices.min():.4f}, {market_prices.max():.4f}]")
+print(f"    Market prices computed")
+print(f"    Price range: [{market_prices.min():.4f}, {market_prices.max():.4f}]")
 
 # Compute model prices
 model_prices = np.array([
@@ -145,19 +145,19 @@ model_prices = np.array([
     for K, tau in zip(all_K, all_tau)
 ])
 
-print(f"   ✓ Model prices computed")
-print(f"   ✓ Price range: [{model_prices.min():.4f}, {model_prices.max():.4f}]")
+print(f"    Model prices computed")
+print(f"    Price range: [{model_prices.min():.4f}, {model_prices.max():.4f}]")
 
 # Compute RMSE
 price_rmse = np.sqrt(np.mean((model_prices - market_prices)**2))
-print(f"   ✓ Price RMSE: {price_rmse:.6f}")
+print(f"    Price RMSE: {price_rmse:.6f}")
 
 # Test Feller condition
 feller_satisfied = 2 * test_params['kappa'] * test_params['theta'] > test_params['sigma_v']**2
-print(f"   ✓ Feller condition: {feller_satisfied}")
+print(f"    Feller condition: {feller_satisfied}")
 
 print("\n" + "=" * 80)
-print("✅ SETUP TEST COMPLETE!")
+print(" SETUP TEST COMPLETE!")
 print("=" * 80)
 print("\nAll systems operational. Ready to run full calibration:")
 print("  python run_single_heston_calibration.py")

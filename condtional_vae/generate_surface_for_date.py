@@ -74,14 +74,14 @@ if args.spot is None:
             args.spot = float(nifty_data['Close'].iloc[-1])
             actual_date = nifty_data.index[-1].date()
             if actual_date == target_date:
-                print(f"  ✓ NIFTY 50 spot price: {args.spot:.2f}")
+                print(f"   NIFTY 50 spot price: {args.spot:.2f}")
             else:
-                print(f"  ⚠ Using nearest available date: {actual_date}")
-                print(f"  ✓ NIFTY 50 spot price: {args.spot:.2f}")
+                print(f"   Using nearest available date: {actual_date}")
+                print(f"   NIFTY 50 spot price: {args.spot:.2f}")
         else:
             raise ValueError("No NIFTY data available from yfinance")
     except Exception as e:
-        print(f"  ✗ Error fetching spot price: {e}")
+        print(f"   Error fetching spot price: {e}")
         print(f"  → Using default spot price: 21000.0")
         args.spot = 21000.0
 else:
@@ -108,9 +108,9 @@ if os.path.exists(norm_stats_path):
     norm_stats = torch.load(norm_stats_path, map_location=device, weights_only=False)
     cond_raw_mean = norm_stats['raw_mean'].to(device)
     cond_raw_std = norm_stats['raw_std'].to(device)
-    print(f"✓ Loaded conditioning normalization stats from: conditioning_normalization_stats.pt")
+    print(f" Loaded conditioning normalization stats from: conditioning_normalization_stats.pt")
 else:
-    print(f"⚠ Normalization stats file not found. Run compute_normalization_stats.py first!")
+    print(f" Normalization stats file not found. Run compute_normalization_stats.py first!")
     sys.exit(1)
 
 # Load model
@@ -122,7 +122,7 @@ model = ConditionalVAE_SingleHeston(
 model.load_state_dict(checkpoint['model_state_dict'])
 model.eval()
 
-print("✓ Model loaded")
+print(" Model loaded")
 
 # ============================================================================
 # Fetch Market Data (1 year buffer for rolling features)
@@ -140,12 +140,12 @@ try:
     vix_data = get_history(symbol="INDIAVIX", start=fetch_start, end=fetch_end, index=True)
     if len(vix_data) > 0 and 'Close' in vix_data.columns:
         vix_data = vix_data[['Close']].rename(columns={'Close': 'india_vix'})
-        print(f"    ✓ India VIX fetched: {len(vix_data)} days")
+        print(f"     India VIX fetched: {len(vix_data)} days")
         vix_success = True
     else:
         raise ValueError("No VIX data returned")
 except Exception as e:
-    print(f"    ✗ India VIX failed: {e}")
+    print(f"     India VIX failed: {e}")
     print(f"    → Trying alternative: Using ^VIX (US VIX) as proxy...")
     try:
         vix_data_us = yf.download('^VIX', start=fetch_start, end=fetch_end, progress=False)
@@ -153,12 +153,12 @@ except Exception as e:
             # Scale US VIX to approximate India VIX (India VIX typically ~1.2-1.5x US VIX)
             vix_data = vix_data_us[['Close']].rename(columns={'Close': 'india_vix'})
             vix_data['india_vix'] = vix_data['india_vix'] * 1.3  # Approximate scaling
-            print(f"    ✓ Using US VIX as proxy (scaled by 1.3x): {len(vix_data)} days")
+            print(f"     Using US VIX as proxy (scaled by 1.3x): {len(vix_data)} days")
             vix_success = True
         else:
             raise ValueError("No US VIX data available")
     except Exception as e2:
-        print(f"    ✗ Alternative also failed: {e2}")
+        print(f"     Alternative also failed: {e2}")
         print(f"    → Cannot proceed without volatility data")
         sys.exit(1)
 
@@ -168,13 +168,13 @@ usdinr_data = yf.download('USDINR=X', start=fetch_start, end=fetch_end, progress
 crude_data = yf.download('BZ=F', start=fetch_start, end=fetch_end, progress=False)[['Close']].rename(columns={'Close': 'crude_oil'})
 yield_data = yf.download('^TNX', start=fetch_start, end=fetch_end, progress=False)[['Close']].rename(columns={'Close': 'us_10y_yield'})
 
-print(f"    ✓ USD/INR: {len(usdinr_data)} days")
-print(f"    ✓ Crude Oil: {len(crude_data)} days")
-print(f"    ✓ US 10Y Yield: {len(yield_data)} days")
+print(f"     USD/INR: {len(usdinr_data)} days")
+print(f"     Crude Oil: {len(crude_data)} days")
+print(f"     US 10Y Yield: {len(yield_data)} days")
 
 # Combine all market data
 combined_data = pd.concat([vix_data, usdinr_data, crude_data, yield_data], axis=1).dropna()
-print(f"✓ Combined market data: {len(combined_data)} days")
+print(f" Combined market data: {len(combined_data)} days")
 
 # ============================================================================
 # Compute Rolling Features
@@ -193,7 +193,7 @@ combined_data['crude_oil_30d_mean'] = combined_data['crude_oil'].rolling(30, min
 # USD/INR quarterly mean
 combined_data['usdinr_quarterly_mean'] = combined_data['usdinr'].rolling(90, min_periods=1).mean()
 
-print("✓ Rolling features computed")
+print(" Rolling features computed")
 
 # ============================================================================
 # Load GDELT Unrest Index Data
@@ -215,14 +215,14 @@ if os.path.exists(gdelt_unrest_file):
     target_ts = pd.Timestamp(target_date)
     
     if target_date < TRAINING_DATA_START or target_date > TRAINING_DATA_END:
-        print(f"    ⚠ Target date {target_date} is outside training range ({TRAINING_DATA_START} to {TRAINING_DATA_END})")
+        print(f"     Target date {target_date} is outside training range ({TRAINING_DATA_START} to {TRAINING_DATA_END})")
         print(f"    → Using default unrest index (training mean): {DEFAULT_UNREST_INDEX:.6f}")
         print(f"    ℹ Model was trained on 2015-2020 data; extrapolation to other periods may be unreliable")
         unrest_index_yearly = DEFAULT_UNREST_INDEX
         args.fetch_gdelt = False
     elif target_ts in gdelt_unrest_df.index:
         unrest_index_yearly = float(gdelt_unrest_df.loc[target_ts, 'unrest_index_yearly'])
-        print(f"    ✓ Found unrest index for {target_date}: {unrest_index_yearly:.6f}")
+        print(f"     Found unrest index for {target_date}: {unrest_index_yearly:.6f}")
         args.fetch_gdelt = False
     else:
         # Find nearest date
@@ -232,16 +232,16 @@ if os.path.exists(gdelt_unrest_file):
         
         if date_diff <= 7:  # Within a week, use it
             unrest_index_yearly = float(gdelt_unrest_df.iloc[nearest_idx]['unrest_index_yearly'])
-            print(f"    ⚠ Using nearest date: {nearest_date.date()} (diff: {date_diff} days)")
-            print(f"    ✓ Unrest index: {unrest_index_yearly:.6f}")
+            print(f"     Using nearest date: {nearest_date.date()} (diff: {date_diff} days)")
+            print(f"     Unrest index: {unrest_index_yearly:.6f}")
             args.fetch_gdelt = False
         else:
-            print(f"    ⚠ Target date not in pre-computed data (nearest: {nearest_date.date()}, diff: {date_diff} days)")
+            print(f"     Target date not in pre-computed data (nearest: {nearest_date.date()}, diff: {date_diff} days)")
             print(f"    → Using default value (mean from training data): {DEFAULT_UNREST_INDEX:.6f}")
             unrest_index_yearly = DEFAULT_UNREST_INDEX
             args.fetch_gdelt = False
 else:
-    print(f"  ⚠ Pre-computed unrest index file not found: {gdelt_unrest_file}")
+    print(f"   Pre-computed unrest index file not found: {gdelt_unrest_file}")
     print(f"    → Using default value (mean from training data): {DEFAULT_UNREST_INDEX:.6f}")
     unrest_index_yearly = DEFAULT_UNREST_INDEX
     args.fetch_gdelt = False
@@ -257,7 +257,7 @@ if args.fetch_gdelt:
         # Check credentials
         gdelt_creds_path = os.path.join(script_dir, args.gdelt_credentials)
         if not os.path.exists(gdelt_creds_path):
-            print(f"    ✗ Credentials not found: {gdelt_creds_path}")
+            print(f"     Credentials not found: {gdelt_creds_path}")
             print(f"    → Using default unrest index: {100.457836}")
             unrest_index_yearly = 100.457836
             args.fetch_gdelt = False
@@ -310,7 +310,7 @@ if args.fetch_gdelt:
             query_job = client.query(query)
             gdelt_df = query_job.to_dataframe()
             
-            print(f"      ✓ Fetched {len(gdelt_df)} days")
+            print(f"       Fetched {len(gdelt_df)} days")
             
             # Compute unrest index using the same methodology
             # (simplified version - full implementation in fetch_and_compute_unrest_index.py)
@@ -340,20 +340,20 @@ if args.fetch_gdelt:
                 nearest_idx = gdelt_df.index.get_indexer([target_ts_gdelt], method='nearest')[0]
                 unrest_index_yearly = float(gdelt_df.iloc[nearest_idx]['unrest_index_yearly'])
             
-            print(f"      ✓ Computed unrest index: {unrest_index_yearly:.6f}")
+            print(f"       Computed unrest index: {unrest_index_yearly:.6f}")
             
     except ImportError:
-        print("    ✗ Google Cloud libraries not installed")
+        print("     Google Cloud libraries not installed")
         print("      Install with: pip install google-cloud-bigquery google-auth db-dtypes")
         print(f"    → Using default unrest index: {100.457836}")
         unrest_index_yearly = 100.457836
     except Exception as e:
-        print(f"    ✗ Error fetching GDELT data: {e}")
+        print(f"     Error fetching GDELT data: {e}")
         print(f"    → Using default unrest index: {100.457836}")
         unrest_index_yearly = 100.457836
 
 # Unrest index already loaded/computed above
-print(f"\n✓ Using unrest index: {unrest_index_yearly:.6f}")
+print(f"\n Using unrest index: {unrest_index_yearly:.6f}")
 
 # ============================================================================
 # Extract Features for Target Date
@@ -365,12 +365,12 @@ print(f"\nExtracting features for {target_date}...")
 target_ts = pd.Timestamp(target_date)
 if target_ts in combined_data.index:
     row = combined_data.loc[target_ts]
-    print(f"  ✓ Exact match found for {target_date}")
+    print(f"   Exact match found for {target_date}")
 else:
     nearest_idx = combined_data.index.get_indexer([target_ts], method='nearest')[0]
     nearest_date = combined_data.index[nearest_idx]
     row = combined_data.loc[nearest_date]
-    print(f"  ⚠ Using nearest date: {nearest_date.date()} (requested: {target_date})")
+    print(f"   Using nearest date: {nearest_date.date()} (requested: {target_date})")
 
 # Build raw conditioning vector (in the order specified in config)
 # Order: crude_oil_30d_mean, crude_oil_7d_mean, unrest_index_yearly, crude_oil, 
@@ -408,7 +408,7 @@ for i, var_name in enumerate(config['data']['conditioning_vars']):
 conditioning_tensor = conditioning_normalized.to(device)
 conditioning_batch = conditioning_tensor.unsqueeze(0).repeat(args.n_samples, 1)
 
-print(f"\n✓ Conditioning batch prepared: shape {conditioning_batch.shape}")
+print(f"\n Conditioning batch prepared: shape {conditioning_batch.shape}")
 
 # ============================================================================
 # Generate Heston Parameters
@@ -438,7 +438,7 @@ with torch.no_grad():
     
     params_np = params_original.cpu().numpy()
 
-print(f"✓ Generated {len(params_np)} parameter sets")
+print(f" Generated {len(params_np)} parameter sets")
 
 # Print parameter statistics
 param_names = ['kappa', 'theta', 'sigma_v', 'rho', 'v0']
@@ -520,7 +520,7 @@ for idx in tqdm(range(args.n_samples), desc="Generating surfaces"):
             failed_reasons['model_creation'] += 1
 
 if len(surfaces) == 0:
-    print(f"✗ No valid surfaces generated (0/{args.n_samples})")
+    print(f" No valid surfaces generated (0/{args.n_samples})")
     print(f"   Failure reasons:")
     print(f"     - Model creation failed: {failed_reasons['model_creation']}")
     print(f"     - Pricing/IV extraction failed: {failed_reasons['pricing']}")
@@ -535,13 +535,13 @@ median_surface = np.nanmedian(surfaces_array, axis=0)
 p5_surface = np.nanpercentile(surfaces_array, 5, axis=0)
 p95_surface = np.nanpercentile(surfaces_array, 95, axis=0)
 
-print(f"✓ Valid surfaces: {len(surfaces)}/{args.n_samples} ({len(surfaces)/args.n_samples*100:.1f}%)")
+print(f" Valid surfaces: {len(surfaces)}/{args.n_samples} ({len(surfaces)/args.n_samples*100:.1f}%)")
 
 # Check for NaN values
 nan_count = np.isnan(mean_surface).sum()
 total_points = mean_surface.size
 if nan_count > 0:
-    print(f"\n⚠ Warning: {nan_count}/{total_points} points have NaN values ({nan_count/total_points*100:.1f}%)")
+    print(f"\n Warning: {nan_count}/{total_points} points have NaN values ({nan_count/total_points*100:.1f}%)")
     print("  These are typically extreme OTM strikes that failed to price")
 
 # Print summary statistics
@@ -576,7 +576,7 @@ torch.save({
     'q': args.q
 }, os.path.join(output_dir, 'iv_surfaces.pt'))
 
-print(f"\n✓ Saved surfaces to: {os.path.join(output_dir, 'iv_surfaces.pt')}")
+print(f"\n Saved surfaces to: {os.path.join(output_dir, 'iv_surfaces.pt')}")
 
 # Save mean and median IV matrices as CSV files
 # Create DataFrames with proper labels
@@ -601,8 +601,8 @@ median_iv_df.index.name = 'Maturity'
 mean_iv_df.to_csv(os.path.join(output_dir, 'mean_iv_surface.csv'))
 median_iv_df.to_csv(os.path.join(output_dir, 'median_iv_surface.csv'))
 
-print(f"✓ Saved mean IV matrix to: {os.path.join(output_dir, 'mean_iv_surface.csv')}")
-print(f"✓ Saved median IV matrix to: {os.path.join(output_dir, 'median_iv_surface.csv')}")
+print(f" Saved mean IV matrix to: {os.path.join(output_dir, 'mean_iv_surface.csv')}")
+print(f" Saved median IV matrix to: {os.path.join(output_dir, 'median_iv_surface.csv')}")
 
 # Print the matrices
 print("\n" + "="*80)
@@ -638,7 +638,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, 'atm_term_structure.png'), dpi=300, bbox_inches='tight')
 plt.close()
 
-print(f"  ✓ ATM term structure plot saved")
+print(f"   ATM term structure plot saved")
 
 # Plot 2: Mean IV Surface Heatmap
 fig, ax = plt.subplots(figsize=(12, 8))
@@ -652,7 +652,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, 'mean_surface_heatmap.png'), dpi=300, bbox_inches='tight')
 plt.close()
 
-print(f"  ✓ Mean surface heatmap saved")
+print(f"   Mean surface heatmap saved")
 
 # Plot 2b: Median IV Surface Heatmap
 fig, ax = plt.subplots(figsize=(12, 8))
@@ -666,7 +666,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, 'median_surface_heatmap.png'), dpi=300, bbox_inches='tight')
 plt.close()
 
-print(f"  ✓ Median surface heatmap saved")
+print(f"   Median surface heatmap saved")
 
 # Plot 2c: Comparison of Mean vs Median
 fig, axes = plt.subplots(1, 2, figsize=(18, 7))
@@ -690,7 +690,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, 'mean_vs_median_comparison.png'), dpi=300, bbox_inches='tight')
 plt.close()
 
-print(f"  ✓ Mean vs Median comparison saved")
+print(f"   Mean vs Median comparison saved")
 
 # Plot 3: Smile at different maturities
 fig, axes = plt.subplots(2, 2, figsize=(14, 10))
@@ -727,14 +727,14 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, 'iv_smiles.png'), dpi=300, bbox_inches='tight')
 plt.close()
 
-print(f"  ✓ IV smiles plot saved")
+print(f"   IV smiles plot saved")
 
 # ============================================================================
 # Summary
 # ============================================================================
 
 print(f"\n{'='*80}")
-print(f"✓ GENERATION COMPLETE!")
+print(f" GENERATION COMPLETE!")
 print(f"{'='*80}")
 print(f"Date:              {target_date}")
 print(f"Spot price:        {args.spot:.2f}")

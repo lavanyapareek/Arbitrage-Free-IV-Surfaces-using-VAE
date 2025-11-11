@@ -19,8 +19,8 @@ print("=" * 80)
 # Load calibrated parameters and results
 print("\n1. Loading calibrated parameters...")
 params = torch.load('NIFTY_heston_single_params_tensor.pt')
-print(f"   ✓ Loaded {len(params)} calibrated parameter sets")
-print(f"   ✓ Shape: {params.shape}")
+print(f"    Loaded {len(params)} calibrated parameter sets")
+print(f"    Shape: {params.shape}")
 
 # Load calibration results to get spot prices and maturities
 import pickle
@@ -29,7 +29,7 @@ with open('NIFTY_heston_single_params.pickle', 'rb') as f:
 
 # The pickle has: dates, params, fit_errors, etc.
 # We need to load the original surface data to get spot prices and maturities
-print(f"   ✓ Pickle keys: {calib_results.keys()}")
+print(f"    Pickle keys: {calib_results.keys()}")
 
 # Load the original NIFTY surface data
 with open('../nifty_advanced_surfaces.pickle', 'rb') as f:
@@ -41,12 +41,12 @@ dates = calib_results['dates']
 
 # Get spot prices in the same order as calibrated params
 spot_prices = [spot_prices_dict[date] for date in dates]
-print(f"   ✓ Loaded {len(spot_prices)} spot prices")
-print(f"   ✓ Spot range: [{min(spot_prices):.2f}, {max(spot_prices):.2f}]")
+print(f"    Loaded {len(spot_prices)} spot prices")
+print(f"    Spot range: [{min(spot_prices):.2f}, {max(spot_prices):.2f}]")
 
 # Get maturities from canonical grid
 maturities = nifty_data['canonical_grid']['T_grid']
-print(f"   ✓ Maturities from data: {maturities}")
+print(f"    Maturities from data: {maturities}")
 
 # Settings
 r = 0.067
@@ -75,7 +75,7 @@ for idx in tqdm(range(n_check), desc="Checking surfaces"):
         # Check Feller condition
         feller_lhs = 2 * kappa * theta
         feller_rhs = sigma_v ** 2
-        print(f"    Feller: 2*kappa*theta={feller_lhs:.6f} vs sigma_v^2={feller_rhs:.6f} -> {'✓ OK' if feller_lhs >= feller_rhs else '❌ VIOLATED'}")
+        print(f"    Feller: 2*kappa*theta={feller_lhs:.6f} vs sigma_v^2={feller_rhs:.6f} -> {' OK' if feller_lhs >= feller_rhs else ' VIOLATED'}")
     
     try:
         model = HestonModelQL(
@@ -131,9 +131,9 @@ for idx in tqdm(range(n_check), desc="Checking surfaces"):
             
             if is_inverted:
                 inverted_count += 1
-                status = '❌ INVERTED'
+                status = ' INVERTED'
             else:
-                status = '✓ OK'
+                status = ' OK'
             
             total_checked += 1
             
@@ -157,20 +157,20 @@ print("RESULTS:")
 print("=" * 80)
 
 if total_checked > 0:
-    print(f"\n✓ Successfully checked: {total_checked}/{n_check} surfaces")
-    print(f"❌ Inverted term structure: {inverted_count}/{total_checked} ({inverted_count/total_checked*100:.1f}%)")
-    print(f"✓ Proper term structure: {total_checked - inverted_count}/{total_checked} ({(total_checked - inverted_count)/total_checked*100:.1f}%)")
+    print(f"\n Successfully checked: {total_checked}/{n_check} surfaces")
+    print(f" Inverted term structure: {inverted_count}/{total_checked} ({inverted_count/total_checked*100:.1f}%)")
+    print(f" Proper term structure: {total_checked - inverted_count}/{total_checked} ({(total_checked - inverted_count)/total_checked*100:.1f}%)")
     
     if error_count > 0:
-        print(f"\n⚠ Errors: {error_count}/{n_check}")
+        print(f"\n Errors: {error_count}/{n_check}")
     
     if inverted_count > 0:
-        print(f"\n⚠ WARNING: {inverted_count} calibrated parameter sets produce INVERTED term structures!")
+        print(f"\n WARNING: {inverted_count} calibrated parameter sets produce INVERTED term structures!")
         print("   This means the calibration data itself may have issues.")
     else:
-        print("\n✓ All calibrated parameters produce proper term structures!")
+        print("\n All calibrated parameters produce proper term structures!")
 else:
-    print("\n❌ No valid surfaces could be checked")
+    print("\n No valid surfaces could be checked")
     print(f"   Errors: {error_count}/{n_check}")
 
 print("\n" + "=" * 80)

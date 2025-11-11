@@ -13,6 +13,7 @@ quantlib>=1.28
 
 # Visualization
 matplotlib>=3.4.0
+Pillow>=8.0.0
 
 # Utilities
 tqdm>=4.62.0

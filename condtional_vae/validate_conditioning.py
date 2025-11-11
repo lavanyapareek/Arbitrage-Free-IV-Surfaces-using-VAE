@@ -62,8 +62,8 @@ model.eval()
 param_mean = checkpoint['param_mean'].to(device)
 param_std = checkpoint['param_std'].to(device)
 
-print(f"   ✓ Model loaded from epoch {checkpoint['epoch']}")
-print(f"   ✓ Best validation loss: {checkpoint['val_loss']:.4f}")
+print(f"    Model loaded from epoch {checkpoint['epoch']}")
+print(f"    Best validation loss: {checkpoint['val_loss']:.4f}")
 
 # ============================================================================
 # 2. Load Conditioning Data Statistics
@@ -83,7 +83,7 @@ cond_std = conditioning_data.std(axis=0)
 cond_min = conditioning_data.min(axis=0)
 cond_max = conditioning_data.max(axis=0)
 
-print(f"   ✓ Loaded {len(conditioning_data)} conditioning samples")
+print(f"    Loaded {len(conditioning_data)} conditioning samples")
 print(f"\n   Conditioning variable statistics:")
 for i, var_name in enumerate(cond_var_names):
     print(f"     {var_name:25s}: mean={cond_mean[i]:+.3f}, "
@@ -217,9 +217,9 @@ v0_crisis = regime_results['Crisis']['stats']['v0_mean']
 print(f"  v0: Low Vol ({v0_low_vol:.4f}) < High Vol ({v0_high_vol:.4f}) < Crisis ({v0_crisis:.4f})")
 
 if v0_low_vol < v0_high_vol < v0_crisis:
-    print("  ✓ PASS: v0 increases with VIX (consistent with EDA correlation +0.681)")
+    print("   PASS: v0 increases with VIX (consistent with EDA correlation +0.681)")
 else:
-    print("  ✗ FAIL: v0 does not follow expected pattern")
+    print("   FAIL: v0 does not follow expected pattern")
 
 # ============================================================================
 # 4. TEST 2: Interpolation Quality
@@ -268,9 +268,9 @@ print(f"  Max jump: {np.max(np.abs(v0_diffs)):.6f}")
 print(f"  All positive: {np.all(v0_diffs > 0)}")
 
 if np.all(v0_diffs > 0) and np.max(np.abs(v0_diffs)) < 0.05:
-    print("  ✓ PASS: Smooth monotonic interpolation")
+    print("   PASS: Smooth monotonic interpolation")
 else:
-    print("  ⚠ WARNING: Some discontinuities detected")
+    print("   WARNING: Some discontinuities detected")
 
 # ============================================================================
 # 5. TEST 3: Extrapolation Check
@@ -346,9 +346,9 @@ for extreme_name, extreme_values in extreme_regimes.items():
     print(f"  Valid ranges: {valid_ranges}")
     
     if feller_pct > 80 and valid_ranges:
-        print(f"  ✓ PASS: Generates valid parameters even for extreme conditions")
+        print(f"   PASS: Generates valid parameters even for extreme conditions")
     else:
-        print(f"  ✗ FAIL: Some invalid parameters generated")
+        print(f"   FAIL: Some invalid parameters generated")
 
 # ============================================================================
 # 6. Visualization
@@ -444,7 +444,7 @@ plt.tight_layout()
 
 validation_plot_path = os.path.join(results_dir, 'validation_conditioning.png')
 plt.savefig(validation_plot_path, dpi=300, bbox_inches='tight')
-print(f"\n✓ Validation plots saved: {validation_plot_path}")
+print(f"\n Validation plots saved: {validation_plot_path}")
 
 # ============================================================================
 # 7. Save Results
@@ -471,7 +471,7 @@ results_file = os.path.join(results_dir, config['output']['validation_results'])
 with open(results_file, 'w') as f:
     json.dump(validation_results, f, indent=2)
 
-print(f"✓ Validation results saved: {results_file}")
+print(f" Validation results saved: {results_file}")
 
 # ============================================================================
 # 8. Summary
@@ -481,15 +481,15 @@ print("\n" + "="*80)
 print("VALIDATION SUMMARY")
 print("="*80)
 
-print("\n✓ TEST 1 (Regime Consistency): COMPLETE")
+print("\n TEST 1 (Regime Consistency): COMPLETE")
 print(f"  - Generated samples for 4 market regimes")
 print(f"  - v0 ordering: {v0_low_vol:.4f} < {v0_high_vol:.4f} < {v0_crisis:.4f}")
 
-print("\n✓ TEST 2 (Interpolation): COMPLETE")
+print("\n TEST 2 (Interpolation): COMPLETE")
 print(f"  - Smooth transitions: {np.all(v0_diffs > 0)}")
 print(f"  - Max jump: {np.max(np.abs(v0_diffs)):.6f}")
 
-print("\n✓ TEST 3 (Extrapolation): COMPLETE")
+print("\n TEST 3 (Extrapolation): COMPLETE")
 print(f"  - Tested 3 extreme scenarios")
 print(f"  - Model generates valid parameters outside training range")
 

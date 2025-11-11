@@ -171,12 +171,12 @@ ax5.set_xlim(0, 10)
 ax5.set_ylim(0, 10)
 
 insights = [
-    "✅ Strong evidence: 34/40 relationships significant",
-    "✅ v₀ highly responsive to India VIX (r=0.681)",
-    "✅ σᵥ inversely tracks crude oil (r=-0.552)",
-    "✅ High mutual information (up to 0.97)",
-    "✅ Non-linear relationships detected",
-    "✅ All parameters show dependencies",
+    " Strong evidence: 34/40 relationships significant",
+    " v₀ highly responsive to India VIX (r=0.681)",
+    " σᵥ inversely tracks crude oil (r=-0.552)",
+    " High mutual information (up to 0.97)",
+    " Non-linear relationships detected",
+    " All parameters show dependencies",
 ]
 
 ax5.text(5, 9.5, 'Key Evidence', ha='center', fontsize=13, fontweight='bold')
@@ -196,12 +196,12 @@ ax6.set_xlim(0, 10)
 ax6.set_ylim(0, 10)
 
 benefits = [
-    "🎯 Regime-aware generation",
-    "📊 Stress testing capability",
-    "🔮 Market forecasting integration",
-    "🎛️ Fine-grained control",
-    "📈 Better reconstruction",
-    "💼 Business value: Risk mgmt",
+    " Regime-aware generation",
+    " Stress testing capability",
+    " Market forecasting integration",
+    " Fine-grained control",
+    " Better reconstruction",
+    " Business value: Risk mgmt",
 ]
 
 ax6.text(5, 9.5, 'CVAE Benefits', ha='center', fontsize=13, fontweight='bold')
@@ -216,13 +216,13 @@ for i, benefit in enumerate(benefits):
 # ============================================================================
 
 fig.text(0.5, 0.02, 
-         '⭐ RECOMMENDATION: Implement Conditional VAE - Strong Statistical Evidence + High Business Value ⭐',
+         ' RECOMMENDATION: Implement Conditional VAE - Strong Statistical Evidence + High Business Value ',
          ha='center', fontsize=14, fontweight='bold',
          bbox=dict(boxstyle='round,pad=1', facecolor='gold', alpha=0.8))
 
 plt.tight_layout(rect=[0, 0.03, 1, 0.97])
 plt.savefig('SUMMARY_INFOGRAPHIC.png', dpi=300, bbox_inches='tight')
-print("\n✅ Summary infographic saved: SUMMARY_INFOGRAPHIC.png")
+print("\n Summary infographic saved: SUMMARY_INFOGRAPHIC.png")
 plt.close()
 
 print("\n" + "="*80)

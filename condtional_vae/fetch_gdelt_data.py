@@ -99,7 +99,7 @@ def fetch_gdelt_events(credentials_path, start_date, end_date, country_code='IN'
     print("  → Downloading results...")
     df = query_job.to_dataframe()
     
-    print(f"✓ Fetched {len(df)} events")
+    print(f" Fetched {len(df)} events")
     
     return df
 
@@ -151,7 +151,7 @@ def process_gdelt_data(df):
         'NumArticles': 'sum'
     }).reset_index()
     
-    print(f"✓ Aggregated to {len(df_daily)} daily records")
+    print(f" Aggregated to {len(df_daily)} daily records")
     
     return df_daily
 
@@ -215,7 +215,7 @@ def main():
     
     # Check credentials file exists
     if not os.path.exists(args.credentials):
-        print(f"✗ Credentials file not found: {args.credentials}")
+        print(f" Credentials file not found: {args.credentials}")
         print("  Please provide a valid Google Cloud service account JSON key")
         return
     
@@ -228,7 +228,7 @@ def main():
             args.country
         )
     except Exception as e:
-        print(f"✗ Error fetching data: {e}")
+        print(f" Error fetching data: {e}")
         return
     
     # Process data
@@ -256,11 +256,11 @@ def main():
         
         df_processed = df_processed.reset_index()
         
-        print("✓ Computed rolling indices: 7d, 30d, quarterly, yearly")
+        print(" Computed rolling indices: 7d, 30d, quarterly, yearly")
     
     # Save
     df_processed.to_csv(args.output, index=False)
-    print(f"\n✓ Saved processed data to: {args.output}")
+    print(f"\n Saved processed data to: {args.output}")
     
     # Summary
     print(f"\n{'='*80}")

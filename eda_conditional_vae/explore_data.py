@@ -34,13 +34,13 @@ print("\n1. Loading data...")
 # Load Heston parameters
 heston_path = '../calibration_single_heston/NIFTY_heston_single_params_tensor.pt'
 heston_params = torch.load(heston_path)
-print(f"   ✓ Heston parameters: {heston_params.shape}")
+print(f"    Heston parameters: {heston_params.shape}")
 print(f"     Format: [kappa, theta, sigma_v, rho, v0]")
 
 # Load conditioning variables
 cond_path = '../conditioning_variables_top8.csv'
 cond_vars = pd.read_csv(cond_path)
-print(f"   ✓ Conditioning variables: {cond_vars.shape}")
+print(f"    Conditioning variables: {cond_vars.shape}")
 print(f"     Columns: {list(cond_vars.columns)}")
 
 # Check date alignment
@@ -73,8 +73,8 @@ df_merged = pd.merge(
     how='inner'
 )
 
-print(f"   ✓ Merged dataset: {df_merged.shape}")
-print(f"   ✓ Matched samples: {len(df_merged)}")
+print(f"    Merged dataset: {df_merged.shape}")
+print(f"    Matched samples: {len(df_merged)}")
 
 # Extract conditioning variable names (exclude date)
 cond_var_names = [col for col in cond_vars.columns if col != 'Unnamed: 0']
@@ -84,7 +84,7 @@ for i, var in enumerate(cond_var_names, 1):
 
 # Save merged dataset
 df_merged.to_csv('merged_data.csv', index=False)
-print(f"\n   ✓ Saved: merged_data.csv")
+print(f"\n    Saved: merged_data.csv")
 
 # ============================================================================
 # 3. BASIC STATISTICS
@@ -104,7 +104,7 @@ missing = df_merged.isnull().sum()
 if missing.sum() > 0:
     print(missing[missing > 0])
 else:
-    print("     None ✓")
+    print("     None ")
 
 # ============================================================================
 # 4. CORRELATION ANALYSIS
@@ -131,7 +131,7 @@ print(correlations.round(3))
 
 # Save correlations
 correlations.to_csv('correlations.csv')
-print(f"\n   ✓ Saved: correlations.csv")
+print(f"\n    Saved: correlations.csv")
 
 # Find strongest correlations
 print("\n   Strongest correlations:")
@@ -166,7 +166,7 @@ ax.set_ylabel('Heston Parameters', fontsize=12)
 plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
 plt.savefig('correlation_heatmap.png', dpi=300, bbox_inches='tight')
-print(f"   ✓ Saved: correlation_heatmap.png")
+print(f"    Saved: correlation_heatmap.png")
 plt.close()
 
 # ============================================================================
@@ -191,7 +191,7 @@ for i, param in enumerate(param_names):
 axes[-1].set_xlabel('Date', fontsize=12)
 plt.tight_layout()
 plt.savefig('heston_timeseries.png', dpi=300, bbox_inches='tight')
-print(f"   ✓ Saved: heston_timeseries.png")
+print(f"    Saved: heston_timeseries.png")
 plt.close()
 
 # Conditioning variables time series
@@ -212,7 +212,7 @@ for i, var in enumerate(cond_var_names):
 axes[-1].set_xlabel('Date', fontsize=12)
 plt.tight_layout()
 plt.savefig('conditioning_timeseries.png', dpi=300, bbox_inches='tight')
-print(f"   ✓ Saved: conditioning_timeseries.png")
+print(f"    Saved: conditioning_timeseries.png")
 plt.close()
 
 # ============================================================================
@@ -254,7 +254,7 @@ for param in param_names:
     
     plt.tight_layout()
     plt.savefig(f'scatter_{param}.png', dpi=300, bbox_inches='tight')
-    print(f"   ✓ Saved: scatter_{param}.png")
+    print(f"    Saved: scatter_{param}.png")
     plt.close()
 
 # ============================================================================
@@ -293,7 +293,7 @@ axes[-1].axis('off')  # Hide last subplot
 fig.suptitle('Distribution of Heston Parameters', fontsize=14, fontweight='bold')
 plt.tight_layout()
 plt.savefig('distributions.png', dpi=300, bbox_inches='tight')
-print(f"   ✓ Saved: distributions.png")
+print(f"    Saved: distributions.png")
 plt.close()
 
 # ============================================================================
@@ -323,7 +323,7 @@ print(mi_scores.round(4))
 
 # Save MI scores
 mi_scores.to_csv('mutual_information.csv')
-print(f"\n   ✓ Saved: mutual_information.csv")
+print(f"\n    Saved: mutual_information.csv")
 
 # Visualize MI scores
 fig, ax = plt.subplots(figsize=(12, 8))
@@ -342,7 +342,7 @@ ax.set_ylabel('Heston Parameters', fontsize=12)
 plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
 plt.savefig('mutual_information_heatmap.png', dpi=300, bbox_inches='tight')
-print(f"   ✓ Saved: mutual_information_heatmap.png")
+print(f"    Saved: mutual_information_heatmap.png")
 plt.close()
 
 # ============================================================================
@@ -374,7 +374,7 @@ for param in param_names:
 
 # Save p-values
 p_values.to_csv('p_values.csv')
-print(f"\n   ✓ Saved: p_values.csv")
+print(f"\n    Saved: p_values.csv")
 
 print("\n" + "="*80)
 print("ANALYSIS COMPLETE!")

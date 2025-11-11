@@ -62,9 +62,9 @@ n_maturities = len(T_grid)
 logm_grid = np.linspace(-0.2, 0.2, 21)  # 21 strikes from -20% to +20%
 n_strikes = len(logm_grid)
 
-print(f"   ✓ Maturities: {n_maturities} ({T_grid[0]:.3f} to {T_grid[-1]:.3f} years)")
-print(f"   ✓ Log-moneyness: {n_strikes} ({logm_grid[0]:.2f} to {logm_grid[-1]:.2f})")
-print(f"   ✓ Output shape per surface: ({n_maturities}, {n_strikes})")
+print(f"    Maturities: {n_maturities} ({T_grid[0]:.3f} to {T_grid[-1]:.3f} years)")
+print(f"    Log-moneyness: {n_strikes} ({logm_grid[0]:.2f} to {logm_grid[-1]:.2f})")
+print(f"    Output shape per surface: ({n_maturities}, {n_strikes})")
 
 # ============================================================================
 # 3. Load Regime Parameters
@@ -76,20 +76,20 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 input_path = os.path.join(script_dir, args.input)
 
 if not os.path.exists(input_path):
-    print(f"   ✗ File not found: {input_path}")
+    print(f"    File not found: {input_path}")
     print(f"   Run sample_regimes.py first!")
     exit(1)
 
 data = torch.load(input_path, weights_only=False)
 available_regimes = list(data['regimes'].keys())
 
-print(f"   ✓ Loaded: {input_path}")
+print(f"    Loaded: {input_path}")
 print(f"   Available regimes: {', '.join(available_regimes)}")
 
 # Filter regimes
 regimes_to_process = [r for r in args.regimes if r in available_regimes]
 if not regimes_to_process:
-    print(f"   ✗ No valid regimes found!")
+    print(f"    No valid regimes found!")
     exit(1)
 
 print(f"   Processing: {', '.join(regimes_to_process)}")
@@ -361,14 +361,14 @@ for regime_name in regimes_to_process:
             'avg_calendar_violations': calendar_mean
         }
         
-        print(f"  ✓ Valid surfaces: {valid_count}/{n_samples} ({regime_stats[regime_name]['success_rate']:.1f}%)")
+        print(f"   Valid surfaces: {valid_count}/{n_samples} ({regime_stats[regime_name]['success_rate']:.1f}%)")
         print(f"  ATM IV (1M): {regime_stats[regime_name]['atm_iv_mean'][0]:.2%}")
         print(f"  ATM IV (24M): {regime_stats[regime_name]['atm_iv_mean'][-1]:.2%}")
         print(f"  Arbitrage-free: {arbitrage_stats['arbitrage_free_count']}/{valid_count} ({arb_free_pct:.1f}%)")
         print(f"    Static violations (avg): {static_mean:.2f}")
         print(f"    Calendar violations (avg): {calendar_mean:.2f}")
     else:
-        print(f"  ✗ No valid surfaces generated!")
+        print(f"   No valid surfaces generated!")
 
 # ============================================================================
 # 6. Save Results
@@ -388,7 +388,7 @@ for regime_name, surfaces in regime_surfaces.items():
         'r': args.r,
         'q': args.q
     }, regime_file)
-    print(f"  ✓ {regime_name}: {regime_file}")
+    print(f"   {regime_name}: {regime_file}")
 
 # Save combined file
 combined_file = os.path.join(output_dir, 'all_regime_surfaces.pt')
@@ -402,7 +402,7 @@ torch.save({
     'r': args.r,
     'q': args.q
 }, combined_file)
-print(f"  ✓ Combined: {combined_file}")
+print(f"   Combined: {combined_file}")
 
 # ============================================================================
 # 7. Create Visualizations
@@ -432,7 +432,7 @@ ax.grid(True, alpha=0.3)
 
 term_structure_path = os.path.join(output_dir, 'atm_term_structure_comparison.png')
 plt.savefig(term_structure_path, dpi=300, bbox_inches='tight')
-print(f"  ✓ {term_structure_path}")
+print(f"   {term_structure_path}")
 plt.close()
 
 # Plot 2: Volatility Smile Comparison (6M maturity)
@@ -461,7 +461,7 @@ ax.axvline(0, color='black', linestyle='--', alpha=0.5, linewidth=1)
 
 smile_path = os.path.join(output_dir, 'volatility_smile_comparison.png')
 plt.savefig(smile_path, dpi=300, bbox_inches='tight')
-print(f"  ✓ {smile_path}")
+print(f"   {smile_path}")
 plt.close()
 
 # Plot 3: Full Surface Heatmaps
@@ -491,7 +491,7 @@ plt.tight_layout()
 
 heatmap_path = os.path.join(output_dir, 'surface_heatmaps.png')
 plt.savefig(heatmap_path, dpi=300, bbox_inches='tight')
-print(f"  ✓ {heatmap_path}")
+print(f"   {heatmap_path}")
 plt.close()
 
 # Plot 4: 3D Surface Plot (first regime as example)
@@ -520,7 +520,7 @@ plt.tight_layout()
 
 surface_3d_path = os.path.join(output_dir, 'surfaces_3d.png')
 plt.savefig(surface_3d_path, dpi=300, bbox_inches='tight')
-print(f"  ✓ {surface_3d_path}")
+print(f"   {surface_3d_path}")
 plt.close()
 
 # Plot 5: Arbitrage Violations
@@ -576,7 +576,7 @@ plt.tight_layout()
 
 arbitrage_path = os.path.join(output_dir, 'arbitrage_analysis.png')
 plt.savefig(arbitrage_path, dpi=300, bbox_inches='tight')
-print(f"  ✓ {arbitrage_path}")
+print(f"   {arbitrage_path}")
 plt.close()
 
 # ============================================================================

@@ -81,7 +81,7 @@ try:
     df_ind = query_job.to_dataframe()
     
     if len(df_ind) == 0:
-        print("⚠ WARNING: BigQuery returned empty results!")
+        print(" WARNING: BigQuery returned empty results!")
         print("This may indicate BigQuery data is not available beyond 2020.")
         print("GDELT has known delays in BigQuery ingestion (data may lag 6+ months behind real-time).")
         df_ind = None
@@ -89,12 +89,12 @@ try:
         # Convert date column to datetime
         df_ind['Event_Date'] = pd.to_datetime(df_ind['Event_Date'])
         max_date = df_ind['Event_Date'].max()
-        print(f"✓ Fetched {len(df_ind)} days of data")
+        print(f" Fetched {len(df_ind)} days of data")
         print(f"  Date range: {df_ind['Event_Date'].min().date()} to {max_date.date()}")
         use_fresh_data = True
             
 except Exception as e:
-    print(f"✗ Error fetching data: {e}")
+    print(f" Error fetching data: {e}")
     print("\nTroubleshooting:")
     print("  1. Verify Google Cloud credentials are set up: gdeltplaypal-be8da892c655.json")
     print("  2. Check BigQuery quotas and billing")
@@ -106,19 +106,19 @@ except Exception as e:
 if not use_fresh_data:
     print("\nUsing existing gdelt_india_unrest_index.csv")
     if not os.path.exists('gdelt_india_unrest_index.csv'):
-        print("✗ Error: No existing GDELT data file found!")
+        print(" Error: No existing GDELT data file found!")
         exit(1)
     
     # Read existing CSV
     df_ind = pd.read_csv('gdelt_india_unrest_index.csv', index_col=0, parse_dates=True)
-    print(f"✓ Loaded {len(df_ind)} rows from existing file (data through {df_ind.index.max().date()})")
+    print(f" Loaded {len(df_ind)} rows from existing file (data through {df_ind.index.max().date()})")
 else:
     # Set index for newly fetched data
     df_ind.set_index('Event_Date', inplace=True)
 
 # Process the data
 if df_ind is None or len(df_ind) == 0:
-    print("✗ Error: Could not load GDELT data!")
+    print(" Error: Could not load GDELT data!")
     exit(1)
 
 print("\nProcessing data...")
@@ -205,7 +205,7 @@ print(f"  Count: {len(df_ind)}")
 # Save the data
 output_file = 'gdelt_india_unrest_index.csv'
 df_ind[['RSUI_weighted_daily', 'unrest_index_yearly']].to_csv(output_file)
-print(f"\n✓ Saved unrest index data to: {output_file}")
+print(f"\n Saved unrest index data to: {output_file}")
 
 print("\n" + "="*80)
 print("USE THESE VALUES IN compute_normalization_stats.py:")

@@ -2,7 +2,7 @@
 
 A deep learning pipeline for generating arbitrage-free implied volatility surfaces for NIFTY 50 options using Conditional Variational Autoencoders (CVAE) conditioned on market variables.
 
-## 🎯 Project Overview
+## Project Overview
 
 This project implements a complete pipeline for:
 1. **Heston Model Calibration**: Fits stochastic volatility model parameters to market data
@@ -10,7 +10,7 @@ This project implements a complete pipeline for:
 3. **IV Surface Generation**: Generates forward-looking volatility surfaces for any date
 4. **AI-Powered Analysis**: Interactive LLM assistant for options analysis
 
-## 📊 Key Features
+## Key Features
 
 - **Arbitrage-Free Surfaces**: Ensures no-arbitrage conditions using Heston model
 - **Market Conditioning**: Incorporates VIX, USD/INR, crude oil, interest rates, and geopolitical unrest
@@ -18,7 +18,7 @@ This project implements a complete pipeline for:
 - **Interactive Analysis**: Chat with AI analyst for trading insights
 - **Comprehensive Visualization**: ATM term structures, volatility smiles, heatmaps
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -69,7 +69,7 @@ jupyter notebook Scripts_Orchestration.ipynb
 3. Run Section 4: Generate IV surfaces
 4. Run Section 5: View visualizations
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 .
@@ -90,7 +90,7 @@ jupyter notebook Scripts_Orchestration.ipynb
 └── demo_results/                   # Generated outputs (gitignored)
 ```
 
-## 🔬 Methodology
+## Methodology
 
 ### 1. Heston Model Calibration
 
@@ -115,14 +115,14 @@ Fits a single Heston model per day using two-stage optimization:
 4. Generate IV surface using Heston model
 5. Validate arbitrage-free conditions
 
-## 📊 Data Sources
+## Data Sources
 
 - **Options Data**: NIFTY 50 options (2015-2025)
 - **India VIX**: Volatility index from NSE
 - **Market Data**: USD/INR, Crude Oil, US 10Y Yield (via yfinance)
 - **Geopolitical**: GDELT unrest index for India
 
-## 🤖 LLM Assistant
+## LLM Assistant
 
 Interactive AI analyst powered by Google Gemini:
 - Generate and analyze surfaces on-demand
@@ -132,14 +132,14 @@ Interactive AI analyst powered by Google Gemini:
 
 **Setup**: Get free API key from https://aistudio.google.com/app/apikey
 
-## 📈 Results
+## Results
 
 - **Date Range**: 2020-01-01 to 2025-11-10
 - **Grid**: 8 maturities × 21 strikes
 - **Generation Time**: ~30-60 seconds per surface
 - **Validation Rate**: ~30% of samples pass arbitrage checks
 
-## 🔒 Security Notes
+## Security Notes
 
 **IMPORTANT**: Never commit sensitive files:
 - `api.json` - Contains API keys
@@ -148,7 +148,7 @@ Interactive AI analyst powered by Google Gemini:
 
 These are excluded via `.gitignore`. Use `api.json.template` for sharing.
 
-## 📝 Citation
+## Citation
 
 If you use this work, please cite:
 
@@ -163,7 +163,7 @@ If you use this work, please cite:
 
 
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! Please:
 1. Fork the repository
@@ -172,7 +172,7 @@ Contributions welcome! Please:
 
 
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - QuantLib for Heston model implementation
 - Google Gemini for LLM capabilities
@@ -181,4 +181,4 @@ Contributions welcome! Please:
 
 ---
 
-**⚠️ Disclaimer**: This project is for educational and research purposes only. Not financial advice. Use at your own risk.
+**Disclaimer**: This project is for educational and research purposes only. Not financial advice. Use at your own risk.

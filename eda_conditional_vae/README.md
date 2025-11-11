@@ -6,17 +6,17 @@ This folder contains a comprehensive **Exploratory Data Analysis (EDA)** that ma
 
 ---
 
-## 📊 Key Findings
+##  Key Findings
 
 ### **Strongest Correlations Discovered:**
 
 | Heston Parameter | Conditioning Variable | Correlation | p-value |
 |-----------------|----------------------|-------------|---------|
-| **v₀** (initial variance) | india_vix_7d_mean | **r = +0.681** | p < 0.001 ⭐⭐⭐ |
-| **σ_v** (vol of vol) | crude_oil | **r = -0.552** | p < 0.001 ⭐⭐⭐ |
-| **κ** (mean reversion) | india_vix_30d_mean | **r = +0.522** | p < 0.001 ⭐⭐ |
-| **ρ** (correlation) | crude_oil | **r = -0.425** | p < 0.001 ⭐⭐ |
-| **θ** (long-term var) | unrest_index_yearly | **r = +0.388** | p < 0.001 ⭐⭐ |
+| **v₀** (initial variance) | india_vix_7d_mean | **r = +0.681** | p < 0.001  |
+| **σ_v** (vol of vol) | crude_oil | **r = -0.552** | p < 0.001  |
+| **κ** (mean reversion) | india_vix_30d_mean | **r = +0.522** | p < 0.001  |
+| **ρ** (correlation) | crude_oil | **r = -0.425** | p < 0.001  |
+| **θ** (long-term var) | unrest_index_yearly | **r = +0.388** | p < 0.001  |
 
 ### **Statistical Significance:**
 - **All 5 Heston parameters** show significant relationships with conditioning variables (p < 0.05)
@@ -25,13 +25,13 @@ This folder contains a comprehensive **Exploratory Data Analysis (EDA)** that ma
 
 ---
 
-## 📁 Files Generated
+##  Files Generated
 
 ### **Analysis Scripts**
 - **`explore_data.py`** - Main EDA script that performs all analysis
 
 ### **Documentation**
-- **`CONDITIONAL_VAE_CASE.md`** - ⭐ **Comprehensive case document** with:
+- **`CONDITIONAL_VAE_CASE.md`** -  **Comprehensive case document** with:
   - Statistical evidence for conditional VAE
   - Architecture proposals
   - Implementation roadmap
@@ -66,7 +66,7 @@ This folder contains a comprehensive **Exploratory Data Analysis (EDA)** that ma
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Run the EDA:
 
@@ -84,7 +84,7 @@ open CONDITIONAL_VAE_CASE.md
 
 ---
 
-## 📈 Data Summary
+##  Data Summary
 
 ### **Heston Parameters** (Target Variables)
 ```
@@ -109,7 +109,7 @@ Variables:
 
 ---
 
-## 💡 Why Conditional VAE?
+##  Why Conditional VAE?
 
 ### **Problem with Standard VAE:**
 ```python
@@ -138,7 +138,7 @@ params = cvae.decode(z, c_high_vol)  # Regime-specific!
 
 ---
 
-## 🎯 Use Cases Enabled
+##  Use Cases Enabled
 
 1. **Stress Testing**
    - Generate Heston params under extreme market conditions
@@ -162,7 +162,7 @@ params = cvae.decode(z, c_high_vol)  # Regime-specific!
 
 ---
 
-## 📊 Key Statistics
+##  Key Statistics
 
 ### **Correlation Strength Distribution:**
 ```
@@ -188,7 +188,7 @@ Significant at p < 0.001:        24  (60%)
 
 ---
 
-## 🏗️ Proposed Architecture
+##  Proposed Architecture
 
 ```python
 class ConditionalVAE(nn.Module):
@@ -214,7 +214,7 @@ class ConditionalVAE(nn.Module):
 
 ---
 
-## 📖 Recommended Reading Order
+##  Recommended Reading Order
 
 1. **Start here**: `CONDITIONAL_VAE_CASE.md` (Executive summary + case)
 2. **Visual evidence**: View all `.png` files
@@ -223,7 +223,7 @@ class ConditionalVAE(nn.Module):
 
 ---
 
-## 🔍 Interpretation Guide
+##  Interpretation Guide
 
 ### **Reading Correlation Values:**
 - **r > +0.5**: Strong positive relationship
@@ -238,14 +238,14 @@ class ConditionalVAE(nn.Module):
 - **MI < 0.3**: Low information content
 
 ### **Reading p-values:**
-- **p < 0.001**: Very strong evidence (⭐⭐⭐)
-- **p < 0.01**: Strong evidence (⭐⭐)
-- **p < 0.05**: Significant evidence (⭐)
+- **p < 0.001**: Very strong evidence ()
+- **p < 0.01**: Strong evidence ()
+- **p < 0.05**: Significant evidence ()
 - **p ≥ 0.05**: Not significant
 
 ---
 
-## 🎓 Key Insights
+##  Key Insights
 
 1. **v₀ (Initial Variance) is highly responsive to India VIX**
    - When VIX spikes, initial variance increases proportionally
@@ -269,26 +269,26 @@ class ConditionalVAE(nn.Module):
 
 ---
 
-## 🔬 Methodology
+##  Methodology
 
 ### **Analyses Performed:**
-1. ✅ Pearson correlation (linear relationships)
-2. ✅ Spearman correlation (monotonic relationships)
-3. ✅ Mutual information (non-linear dependencies)
-4. ✅ Statistical significance testing
-5. ✅ Time series co-movement analysis
-6. ✅ Distribution analysis
-7. ✅ Scatter plot visualization
+1.  Pearson correlation (linear relationships)
+2.  Spearman correlation (monotonic relationships)
+3.  Mutual information (non-linear dependencies)
+4.  Statistical significance testing
+5.  Time series co-movement analysis
+6.  Distribution analysis
+7.  Scatter plot visualization
 
 ### **Quality Checks:**
-- ✅ No missing values
-- ✅ Perfect date alignment (500/500 samples matched)
-- ✅ All variables normalized (standard scaling)
-- ✅ Statistical assumptions verified
+-  No missing values
+-  Perfect date alignment (500/500 samples matched)
+-  All variables normalized (standard scaling)
+-  Statistical assumptions verified
 
 ---
 
-## 📞 Next Steps
+##  Next Steps
 
 1. **Immediate**: Review `CONDITIONAL_VAE_CASE.md` for full case
 2. **Short-term**: Implement basic conditional VAE
@@ -297,7 +297,7 @@ class ConditionalVAE(nn.Module):
 
 ---
 
-## 📚 References
+##  References
 
 - Kingma & Welling (2013): "Auto-Encoding Variational Bayes"
 - Sohn et al. (2015): "Learning Structured Output Representation using Deep Conditional Generative Models"
@@ -306,6 +306,6 @@ class ConditionalVAE(nn.Module):
 
 ---
 
-**Status**: ✅ **Analysis Complete - CVAE Recommended**  
+**Status**:  **Analysis Complete - CVAE Recommended**  
 **Confidence**: **High** (Strong statistical evidence + practical value)  
 **Next Action**: Implement Conditional VAE architecture

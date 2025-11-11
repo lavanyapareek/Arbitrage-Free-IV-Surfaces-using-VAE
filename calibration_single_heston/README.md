@@ -106,7 +106,7 @@ python test_setup.py
 
 Expected output:
 ```
-✅ SETUP TEST COMPLETE!
+ SETUP TEST COMPLETE!
 All systems operational.
 ```
 
@@ -122,11 +122,11 @@ python run_single_heston_calibration.py
 ```
 [DEBUG] Processing day 1/500: 2016-02-09
       [Stage 1] Fast calibration...
-      [Stage 1] ✓ Complete in 15.2s | Loss: 0.234567
+      [Stage 1]  Complete in 15.2s | Loss: 0.234567
       [Stage 2] Wasserstein refinement...
-      [Stage 2] ✓ Complete in 18.5s | Loss: 0.198765
+      [Stage 2]  Complete in 18.5s | Loss: 0.198765
 
-  ✓ Day 1/500 (2016-02-09): SUCCESS
+   Day 1/500 (2016-02-09): SUCCESS
     Fit error: 0.198765 | Feller: True
     Stage 1: 15.2s | Stage 2: 18.5s
 ```
@@ -298,6 +298,6 @@ dW_t^S dW_t^v = ρ dt
 
 ---
 
-**Ready to calibrate!** 🚀
+**Ready to calibrate!** 
 
 Run `python test_setup.py` to verify, then `python run_single_heston_calibration.py` for full calibration.

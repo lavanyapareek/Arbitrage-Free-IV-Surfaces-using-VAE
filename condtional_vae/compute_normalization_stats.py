@@ -43,9 +43,9 @@ try:
     vix_data = pd.DataFrame({'india_vix': get_close_series(vix_raw)})
     vix_data['india_vix'] = pd.to_numeric(vix_data['india_vix'], errors='coerce')
     vix_data = vix_data.dropna()
-    print(f"    ✓ India VIX (^INDIAVIX): {len(vix_data)} days")
+    print(f"     India VIX (^INDIAVIX): {len(vix_data)} days")
 except Exception as e:
-    print(f"    ✗ India VIX failed: {e}")
+    print(f"     India VIX failed: {e}")
     exit(1)
 
 usdinr_raw = yf.download('USDINR=X', start=start_date, end=end_date, progress=False)
@@ -57,13 +57,13 @@ crude_data = pd.DataFrame({'crude_oil': get_close_series(crude_raw)})
 yield_raw = yf.download('^TNX', start=start_date, end=end_date, progress=False)
 yield_data = pd.DataFrame({'us_10y_yield': get_close_series(yield_raw)})
 
-print(f"    ✓ USD/INR: {len(usdinr_data)} days")
-print(f"    ✓ Crude Oil: {len(crude_data)} days")
-print(f"    ✓ US 10Y Yield: {len(yield_data)} days")
+print(f"     USD/INR: {len(usdinr_data)} days")
+print(f"     Crude Oil: {len(crude_data)} days")
+print(f"     US 10Y Yield: {len(yield_data)} days")
 
 # Combine
 combined_data = pd.concat([vix_data, usdinr_data, crude_data, yield_data], axis=1).dropna()
-print(f"\n✓ Combined data: {len(combined_data)} days")
+print(f"\n Combined data: {len(combined_data)} days")
 
 # Compute rolling features
 print("\nComputing rolling features...")
@@ -73,7 +73,7 @@ combined_data['crude_oil_7d_mean'] = combined_data['crude_oil'].rolling(7, min_p
 combined_data['crude_oil_30d_mean'] = combined_data['crude_oil'].rolling(30, min_periods=1).mean()
 combined_data['usdinr_quarterly_mean'] = combined_data['usdinr'].rolling(90, min_periods=1).mean()
 
-print("✓ Rolling features computed")
+print(" Rolling features computed")
 
 # Extract features
 print("\nExtracting features...")
@@ -93,7 +93,7 @@ for idx in combined_data.index:
     features_list.append(features)
 
 features_array = np.array(features_list)
-print(f"✓ Extracted {len(features_array)} feature vectors")
+print(f" Extracted {len(features_array)} feature vectors")
 
 # Compute statistics
 print("\nComputing statistics...")
@@ -103,7 +103,7 @@ raw_std = features_array.std(axis=0)
 # Load actual unrest index statistics from GDELT data
 gdelt_file = os.path.join(os.path.dirname(__file__), 'gdelt_india_unrest_index.csv')
 if os.path.exists(gdelt_file):
-    print(f"\n✓ Loading unrest index from: {gdelt_file}")
+    print(f"\n Loading unrest index from: {gdelt_file}")
     gdelt_df = pd.read_csv(gdelt_file)
     if 'unrest_index_yearly' in gdelt_df.columns:
         unrest_mean = gdelt_df['unrest_index_yearly'].mean()
@@ -114,11 +114,11 @@ if os.path.exists(gdelt_file):
         print(f"  Unrest index std: {unrest_std:.6f}")
         print(f"  Data range: {gdelt_df['Event_Date'].min()} to {gdelt_df['Event_Date'].max()}")
     else:
-        print("  ⚠ Warning: unrest_index_yearly column not found, using placeholder")
+        print("   Warning: unrest_index_yearly column not found, using placeholder")
         raw_mean[2] = 100.0
         raw_std[2] = 10.0
 else:
-    print(f"\n⚠ Warning: GDELT file not found at {gdelt_file}")
+    print(f"\n Warning: GDELT file not found at {gdelt_file}")
     print("  Run fetch_and_compute_unrest_index.py first to get actual statistics")
     print("  Using placeholder values for now")
     raw_mean[2] = 100.0
@@ -153,7 +153,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 output_file = os.path.join(script_dir, 'conditioning_normalization_stats.pt')
 torch.save(stats_dict, output_file)
 
-print(f"\n✓ Saved normalization statistics to: {output_file}")
+print(f"\n Saved normalization statistics to: {output_file}")
 print("\nThese statistics should be used to normalize new raw data:")
 print("  normalized = (raw - raw_mean) / raw_std")
 print("="*80)

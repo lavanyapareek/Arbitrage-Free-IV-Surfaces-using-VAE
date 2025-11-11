@@ -175,8 +175,8 @@ model.eval()
 param_mean = checkpoint['param_mean'].to(device)
 param_std = checkpoint['param_std'].to(device)
 
-print(f"   ✓ Model loaded from epoch {checkpoint['epoch']}")
-print(f"   ✓ Best validation loss: {checkpoint['val_loss']:.4f}")
+print(f"    Model loaded from epoch {checkpoint['epoch']}")
+print(f"    Best validation loss: {checkpoint['val_loss']:.4f}")
 
 # ============================================================================
 # 3. Parse Arguments
@@ -303,7 +303,7 @@ for regime_name in regimes_to_sample:
             'param_names': param_names,
             'num_samples': args.num_samples
         }, regime_file)
-        print(f"  ✓ Saved: {regime_file}")
+        print(f"   Saved: {regime_file}")
 
 # ============================================================================
 # 5. Create Comparison Visualizations
@@ -340,7 +340,7 @@ plt.suptitle('Heston Parameters Across Market Regimes', fontsize=16, fontweight=
 plt.tight_layout()
 comparison_path = os.path.join(output_dir, 'regime_comparison.png')
 plt.savefig(comparison_path, dpi=300, bbox_inches='tight')
-print(f"  ✓ Saved: {comparison_path}")
+print(f"   Saved: {comparison_path}")
 plt.close()
 
 # Plot 2: Distributions for key parameter (v0)
@@ -359,7 +359,7 @@ ax.grid(True, alpha=0.3)
 
 v0_dist_path = os.path.join(output_dir, 'v0_distributions.png')
 plt.savefig(v0_dist_path, dpi=300, bbox_inches='tight')
-print(f"  ✓ Saved: {v0_dist_path}")
+print(f"   Saved: {v0_dist_path}")
 plt.close()
 
 # Plot 3: Feller satisfaction
@@ -388,7 +388,7 @@ for i, (bar, pct) in enumerate(zip(bars, feller_pcts)):
 
 feller_path = os.path.join(output_dir, 'feller_satisfaction.png')
 plt.savefig(feller_path, dpi=300, bbox_inches='tight')
-print(f"  ✓ Saved: {feller_path}")
+print(f"   Saved: {feller_path}")
 plt.close()
 
 # ============================================================================
@@ -416,7 +416,7 @@ torch.save({
     } for regime in all_results.keys()},
     'timestamp': datetime.now().isoformat()
 }, combined_path)
-print(f"  ✓ Combined file: {combined_path}")
+print(f"   Combined file: {combined_path}")
 
 # Save summary CSV
 summary_data = []
@@ -436,7 +436,7 @@ for regime_name in all_results.keys():
 summary_df = pd.DataFrame(summary_data)
 summary_csv_path = os.path.join(output_dir, 'regime_summary.csv')
 summary_df.to_csv(summary_csv_path, index=False)
-print(f"  ✓ Summary CSV: {summary_csv_path}")
+print(f"   Summary CSV: {summary_csv_path}")
 
 # Save detailed JSON
 detailed_results = {}
@@ -455,7 +455,7 @@ for regime_name in all_results.keys():
 json_path = os.path.join(output_dir, 'regime_details.json')
 with open(json_path, 'w') as f:
     json.dump(detailed_results, f, indent=2)
-print(f"  ✓ Detailed JSON: {json_path}")
+print(f"   Detailed JSON: {json_path}")
 
 # ============================================================================
 # 7. Summary
@@ -490,7 +490,7 @@ for regime, v0 in v0_values_sorted:
 print(f"\n  Feller satisfaction:")
 for regime in all_results.keys():
     feller = all_results[regime]['feller_satisfaction']
-    status = "✓" if feller >= 90 else "⚠"
+    status = "" if feller >= 90 else ""
     print(f"    {status} {regime:25s}: {feller:5.1f}%")
 
 print("\n" + "="*80)

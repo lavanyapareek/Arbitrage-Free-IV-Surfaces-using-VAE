@@ -32,7 +32,7 @@ config_path = os.path.join(script_dir, 'config.json')
 with open(config_path, 'r') as f:
     config = json.load(f)
 
-print(f"   ✓ Configuration loaded")
+print(f"    Configuration loaded")
 print(f"   Device: {device}")
 
 # ============================================================================
@@ -44,12 +44,12 @@ print("\n2. Loading and merging data...")
 # Load Heston parameters
 heston_file = os.path.join(script_dir, config['data']['heston_params_file'])
 heston_params = torch.load(heston_file)
-print(f"   ✓ Heston parameters: {heston_params.shape}")
+print(f"    Heston parameters: {heston_params.shape}")
 
 # Load conditioning variables
 cond_file = os.path.join(script_dir, config['data']['conditioning_file'])
 cond_df = pd.read_csv(cond_file)
-print(f"   ✓ Conditioning variables: {cond_df.shape}")
+print(f"    Conditioning variables: {cond_df.shape}")
 
 # Extract dates
 date_col = config['data']['date_column']
@@ -58,13 +58,13 @@ dates = pd.to_datetime(cond_df[date_col])
 # Verify alignment
 assert len(dates) == len(heston_params), \
     f"Date mismatch: {len(dates)} dates vs {len(heston_params)} params"
-print(f"   ✓ Data alignment verified: {len(dates)} samples")
+print(f"    Data alignment verified: {len(dates)} samples")
 print(f"   Date range: {dates.min()} to {dates.max()}")
 
 # Extract conditioning variables
 cond_var_names = config['data']['conditioning_vars']
 conditioning = cond_df[cond_var_names].values.astype(np.float32)
-print(f"   ✓ Extracted {len(cond_var_names)} conditioning variables")
+print(f"    Extracted {len(cond_var_names)} conditioning variables")
 
 # ============================================================================
 # 3. Apply Transformations
@@ -83,13 +83,13 @@ param_mean = transformed_params.mean(dim=0)
 param_std = transformed_params.std(dim=0)
 normalized_params = (transformed_params - param_mean) / param_std
 
-print(f"   ✓ Parameters transformed and normalized")
+print(f"    Parameters transformed and normalized")
 print(f"   Mean: {param_mean.numpy()}")
 print(f"   Std:  {param_std.numpy()}")
 
 # Conditioning (already normalized)
 conditioning_tensor = torch.tensor(conditioning, dtype=torch.float32)
-print(f"   ✓ Conditioning variables: {conditioning_tensor.shape}")
+print(f"    Conditioning variables: {conditioning_tensor.shape}")
 
 # ============================================================================
 # 4. Create Small Test Set
@@ -101,8 +101,8 @@ print("\n4. Creating test batch...")
 test_params = normalized_params[:32]
 test_cond = conditioning_tensor[:32]
 
-print(f"   ✓ Test parameters: {test_params.shape}")
-print(f"   ✓ Test conditioning: {test_cond.shape}")
+print(f"    Test parameters: {test_params.shape}")
+print(f"    Test conditioning: {test_cond.shape}")
 
 # Move to device
 test_params = test_params.to(device)
@@ -130,7 +130,7 @@ model = ConditionalVAE_SingleHeston(
 ).to(device)
 
 total_params = sum(p.numel() for p in model.parameters())
-print(f"   ✓ Model created")
+print(f"    Model created")
 print(f"   Total parameters: {total_params:,}")
 print(f"   Architecture: {config['architecture']['hidden_dims']}")
 print(f"   Latent dim: {config['architecture']['latent_dim']}")
@@ -145,11 +145,11 @@ model.eval()
 with torch.no_grad():
     recon, mu, logvar = model(test_params, test_cond)
 
-print(f"   ✓ Input parameters: {test_params.shape}")
-print(f"   ✓ Input conditioning: {test_cond.shape}")
-print(f"   ✓ Reconstructed: {recon.shape}")
-print(f"   ✓ Latent mu: {mu.shape}")
-print(f"   ✓ Latent logvar: {logvar.shape}")
+print(f"    Input parameters: {test_params.shape}")
+print(f"    Input conditioning: {test_cond.shape}")
+print(f"    Reconstructed: {recon.shape}")
+print(f"    Latent mu: {mu.shape}")
+print(f"    Latent logvar: {logvar.shape}")
 
 # ============================================================================
 # 7. Test Loss Computation
@@ -161,11 +161,11 @@ loss, recon_loss, kl_loss, feller_loss, arbitrage_loss = model.loss_function(
     recon, test_params, mu, logvar, param_mean_device, param_std_device
 )
 
-print(f"   ✓ Total loss:      {loss.item():.6f}")
-print(f"   ✓ Recon loss:      {recon_loss.item():.6f}")
-print(f"   ✓ KL loss:         {kl_loss.item():.6f}")
-print(f"   ✓ Feller loss:     {feller_loss.item():.6f}")
-print(f"   ✓ Arbitrage loss:  {arbitrage_loss.item():.6f}")
+print(f"    Total loss:      {loss.item():.6f}")
+print(f"    Recon loss:      {recon_loss.item():.6f}")
+print(f"    KL loss:         {kl_loss.item():.6f}")
+print(f"    Feller loss:     {feller_loss.item():.6f}")
+print(f"    Arbitrage loss:  {arbitrage_loss.item():.6f}")
 
 # Verify loss components
 expected_total = (recon_loss.item() + 
@@ -175,7 +175,7 @@ expected_total = (recon_loss.item() +
 
 assert abs(loss.item() - expected_total) < 1e-4, \
     f"Loss mismatch: {loss.item()} vs {expected_total}"
-print(f"   ✓ Loss computation verified")
+print(f"    Loss computation verified")
 
 # ============================================================================
 # 8. Test Backward Pass
@@ -194,8 +194,8 @@ loss, _, _, _, _ = model.loss_function(
 loss.backward()
 optimizer.step()
 
-print(f"   ✓ Backward pass successful")
-print(f"   ✓ Optimizer step successful")
+print(f"    Backward pass successful")
+print(f"    Optimizer step successful")
 
 # ============================================================================
 # 9. Test Conditional Sampling
@@ -214,7 +214,7 @@ with torch.no_grad():
         device=device
     )
 
-print(f"   ✓ Single condition broadcast: {samples_single.shape}")
+print(f"    Single condition broadcast: {samples_single.shape}")
 assert samples_single.shape == (10, 5), f"Shape mismatch: {samples_single.shape}"
 
 # Test with multiple conditioning
@@ -226,7 +226,7 @@ with torch.no_grad():
         device=device
     )
 
-print(f"   ✓ Multiple conditions: {samples_multi.shape}")
+print(f"    Multiple conditions: {samples_multi.shape}")
 assert samples_multi.shape == (5, 5), f"Shape mismatch: {samples_multi.shape}"
 
 # ============================================================================
@@ -245,8 +245,8 @@ params_generated[:, 2] = torch.exp(samples_denorm[:, 2])  # sigma_v
 params_generated[:, 3] = torch.tanh(samples_denorm[:, 3])  # rho
 params_generated[:, 4] = torch.exp(samples_denorm[:, 4])  # v0
 
-print(f"   ✓ Generated parameters: {params_generated.shape}")
-print(f"   ✓ Parameter ranges:")
+print(f"    Generated parameters: {params_generated.shape}")
+print(f"    Parameter ranges:")
 print(f"     kappa:   [{params_generated[:, 0].min():.4f}, {params_generated[:, 0].max():.4f}]")
 print(f"     theta:   [{params_generated[:, 1].min():.4f}, {params_generated[:, 1].max():.4f}]")
 print(f"     sigma_v: [{params_generated[:, 2].min():.4f}, {params_generated[:, 2].max():.4f}]")
@@ -259,7 +259,7 @@ theta = params_generated[:, 1]
 sigma_v = params_generated[:, 2]
 feller_satisfied = (2 * kappa * theta > sigma_v ** 2).float().mean().item() * 100
 
-print(f"   ✓ Feller satisfaction: {feller_satisfied:.1f}%")
+print(f"    Feller satisfaction: {feller_satisfied:.1f}%")
 
 # ============================================================================
 # 11. Test Conditioning Effect
@@ -292,14 +292,14 @@ low_vol_denorm = samples_low_vol * param_std_device + param_mean_device
 v0_high_vol = torch.exp(high_vol_denorm[:, 4]).mean().item()
 v0_low_vol = torch.exp(low_vol_denorm[:, 4]).mean().item()
 
-print(f"   ✓ High VIX regime: Mean v0 = {v0_high_vol:.4f}")
-print(f"   ✓ Low VIX regime:  Mean v0 = {v0_low_vol:.4f}")
-print(f"   ✓ Difference: {v0_high_vol - v0_low_vol:.4f}")
+print(f"    High VIX regime: Mean v0 = {v0_high_vol:.4f}")
+print(f"    Low VIX regime:  Mean v0 = {v0_low_vol:.4f}")
+print(f"    Difference: {v0_high_vol - v0_low_vol:.4f}")
 
 if v0_high_vol > v0_low_vol:
-    print(f"   ✓ PASS: High VIX → Higher v0 (as expected from EDA)")
+    print(f"    PASS: High VIX → Higher v0 (as expected from EDA)")
 else:
-    print(f"   ⚠ WARNING: High VIX → Lower v0 (unexpected, model may need training)")
+    print(f"    WARNING: High VIX → Lower v0 (unexpected, model may need training)")
 
 # ============================================================================
 # 12. Test Data Loader
@@ -327,9 +327,9 @@ for batch_params, batch_cond in small_loader:
     
     batch_count += 1
 
-print(f"   ✓ Processed {batch_count} batches")
-print(f"   ✓ Batch size: 16")
-print(f"   ✓ Last batch loss: {loss.item():.6f}")
+print(f"    Processed {batch_count} batches")
+print(f"    Batch size: 16")
+print(f"    Last batch loss: {loss.item():.6f}")
 
 # ============================================================================
 # 13. Summary
