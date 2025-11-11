@@ -1,0 +1,34 @@
+# Core numerical and scientific computing
+numpy>=1.21.0
+scipy>=1.7.0
+pandas>=1.3.0
+
+# Machine Learning / Deep Learning
+torch>=2.0.0
+scikit-learn>=1.0.0
+
+# Quantitative Finance
+# Note: QuantLib requires C++ library to be installed first via: brew install quantlib
+quantlib>=1.28
+
+# Visualization
+matplotlib>=3.4.0
+
+# Utilities
+tqdm>=4.62.0
+seaborn>=0.11.0
+
+# Optional / external data sources
+# yfinance and nsepy are used to fetch market data
+yfinance>=0.2.0
+nsepy>=0.8.0
+
+# Google integrations (used optionally in data fetch scripts)
+google-cloud-bigquery>=3.8.0
+google-auth>=2.20.0
+google-generativeai>=0.1.0
+
+# Note: QuantLib may require system-level installation (brew/apt) and
+# may be provided via the 'QuantLib' or 'quantlib' wheel on PyPI depending on
+# your platform. If you run into issues installing QuantLib, follow the
+# instructions in the project's README.

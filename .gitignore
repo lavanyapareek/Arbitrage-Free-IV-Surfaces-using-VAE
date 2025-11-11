@@ -1,0 +1,110 @@
+# ============================================================================
+# Sensitive Files - NEVER COMMIT THESE
+# ============================================================================
+
+# API Keys and Credentials
+api.json
+*.json.key
+*credentials*.json
+gdeltplaypal*.json
+.env
+.env.local
+
+# Google Cloud Service Account Keys
+*-*.json
+
+# ============================================================================
+# Python
+# ============================================================================
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# ============================================================================
+# Data Files (Large or Generated)
+# ============================================================================
+
+# Large CSV files (>100MB)
+final_options_data_filled.csv
+*_filled.csv
+
+# Generated Results
+notebook_results/
+demo_results/
+results/
+results_date/
+output/
+outputs/
+
+# Pickle files (can be large)
+*.pickle
+*.pkl
+
+# Model checkpoints and weights (if large)
+*.pt
+*.pth
+*.h5
+*.ckpt
+best_model/
+checkpoints/
+
+# VAE training outputs
+vae_single_param/
+
+# ============================================================================
+# IDE and OS
+# ============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+
+# ============================================================================
+# Temporary Files
+# ============================================================================
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Cache
+.cache/
+*.cache
+
+# ============================================================================
+# Optional: Uncomment if you want to exclude these
+# ============================================================================
+
+# Uncomment if you don't want to share notebooks with outputs
+# *.ipynb
+
+# Uncomment if you want to exclude specific data files
+# conditioning_variables_top8.csv
+# gdelt_india_unrest_index.csv

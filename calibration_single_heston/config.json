@@ -1,0 +1,75 @@
+{
+  "input": {
+    "surfaces_file": "../nifty_filtered_surfaces.pickle",
+    "description": "Filtered NIFTY IV surfaces - will fit one Heston model per day across all maturities"
+  },
+  
+  "calibration": {
+    "r": 0.067,
+    "q": 0.0,
+    "max_fit_error": 0.3,
+    "tolerance": 1e-7,
+    "use_previous_day_on_failure": true,
+    "description": "Single Heston model per day across all strikes and maturities"
+  },
+  
+  "loss_function": {
+    "price_term": "option_prices",
+    "weights": "equal",
+    "wasserstein_weight": 1.0,
+    "drift_penalty_weight": 1.0,
+    "feller_penalty_weight": 5.0,
+    "description": "Loss = RMSE(prices) + 1.0*Wasserstein + 1.0*drift_penalty + 5.0*Feller"
+  },
+  
+  "wasserstein": {
+    "enabled": true,
+    "density_grid_points": 50,
+    "maturity_aggregation": "simple_average",
+    "finite_diff_method": "central",
+    "description": "Compute density via finite differences, average Wasserstein across maturities"
+  },
+  
+  "stage1_fast": {
+    "description": "Fast calibration without Wasserstein penalty",
+    "compute_wasserstein": false,
+    "wasserstein_weight": 0.0,
+    "num_random_starts": 10,
+    "fail_attempts": 15
+  },
+  
+  "stage2_wasserstein": {
+    "description": "Refinement with Wasserstein penalty",
+    "compute_wasserstein": true,
+    "wasserstein_weight": 1.0,
+    "num_random_starts": 0,
+    "fail_attempts": 5,
+    "note": "Uses Stage 1 result as initial guess"
+  },
+  
+  "validation": {
+    "check_feller": true,
+    "check_bounds": true,
+    "check_arbitrage": false,
+    "parameter_bounds": {
+      "kappa": [1e-6, 20.0],
+      "theta": [1e-6, 2.0],
+      "sigma_v": [1e-6, 5.0],
+      "rho": [-0.999, 0.999],
+      "v0": [1e-6, 2.0]
+    }
+  },
+  
+  "output": {
+    "pickle_file": "NIFTY_heston_single_params.pickle",
+    "tensor_file": "NIFTY_heston_single_params_tensor.pt",
+    "plot_file": "heston_single_calibration_errors.png",
+    "description": "Output: (n_days, 5) tensor ready for VAE training"
+  },
+  
+  "performance": {
+    "show_timing": true,
+    "show_progress_every": 10,
+    "description": "Display timing stats in terminal"
+  }
+}

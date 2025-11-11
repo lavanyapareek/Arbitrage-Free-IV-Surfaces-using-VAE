@@ -1,0 +1,9 @@
+regime,description,kappa_mean,theta_mean,sigma_v_mean,rho_mean,v0_mean,feller_satisfaction
+low_volatility,"Calm market, low VIX, stable oil prices",0.22134814,0.03598249,0.06488219,0.859159,0.00876952,97.3
+moderate_volatility,Normal market conditions,0.8623229,0.0155979935,0.05817207,0.68971264,0.024925262,95.39999999999999
+high_volatility,"Elevated volatility, higher uncertainty",1.713562,0.022766175,0.020149717,0.31286052,0.06898804,100.0
+crisis,"Market crisis: VIX spike, oil crash, high unrest",2.0483146,0.03595877,0.08221545,0.8056523,0.062787026,100.0
+oil_shock,Oil price shock (crash or spike),3.1690845,0.026154933,0.11737167,0.70976055,0.033266854,100.0
+geopolitical_stress,High geopolitical uncertainty,1.1617413,0.034159712,0.017284568,0.60515505,0.075385876,100.0
+rate_hike_cycle,Rising interest rates environment,3.8076549,0.012117879,0.065691754,-0.4914182,0.03771393,100.0
+fx_stress,Currency market stress (USD/INR),1.3307098,0.0125037655,0.05750103,0.6977478,0.033310026,99.8

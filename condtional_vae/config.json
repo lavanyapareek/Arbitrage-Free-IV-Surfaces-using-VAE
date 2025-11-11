@@ -1,0 +1,99 @@
+{
+  "description": "Conditional VAE training configuration for Heston parameters conditioned on market/macro variables",
+  
+  "data": {
+    "heston_params_file": "../calibration_single_heston/NIFTY_heston_single_params_tensor.pt",
+    "conditioning_file": "../conditioning_variables_top8.csv",
+    "param_order": ["kappa", "theta", "sigma_v", "rho", "v0"],
+    "conditioning_vars": [
+      "crude_oil_30d_mean",
+      "crude_oil_7d_mean", 
+      "unrest_index_yearly",
+      "crude_oil",
+      "usdinr_quarterly_mean",
+      "india_vix_30d_mean",
+      "india_vix_7d_mean",
+      "us_10y_yield"
+    ],
+    "date_column": "Unnamed: 0",
+    "train_split": 1,
+    "temporal_split": true,
+    "description": "Merge on date, temporal split (first 80% train, last 20% val)"
+  },
+  
+  "normalization": {
+    "params": {
+      "kappa": {"transform": "log", "description": "log(kappa)"},
+      "theta": {"transform": "log", "description": "log(theta)"},
+      "sigma_v": {"transform": "log", "description": "log(sigma_v)"},
+      "rho": {"transform": "atanh", "description": "atanh(rho)"},
+      "v0": {"transform": "log", "description": "log(v0)"}
+    },
+    "conditioning": {
+      "method": "as_is",
+      "description": "Conditioning variables already z-score normalized"
+    }
+  },
+  
+  "architecture": {
+    "param_dim": 5,
+    "conditioning_dim": 8,
+    "latent_dim": 4,
+    "hidden_dims": [128, 64, 32],
+    "encoder_activation": "tanh",
+    "decoder_activation": "relu",
+    "dropout": 0.15,
+    "description": "Encoder: [13->128->64->32->4], Decoder: [12->32->64->128->5]"
+  },
+  
+  "training": {
+    "epochs": 1000,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.00001,
+    "gradient_clip": 1.0,
+    "description": "Fixed hyperparameters based on best VAE configuration"
+  },
+  
+  "loss_weights": {
+    "reconstruction": 1.0,
+    "kl_divergence": 0.1,
+    "feller_penalty": 1.0,
+    "arbitrage_penalty": 2.0,
+    "description": "Total = recon + 0.1*KL + 1.0*feller + 2.0*arbitrage"
+  },
+  
+  "monitoring": {
+    "log_every": 10,
+    "validate_every": 50,
+    "generate_samples_every": 100,
+    "save_checkpoint_every": 100,
+    "early_stopping": false,
+    "description": "Monitor all metrics, no early stopping"
+  },
+  
+  "validation": {
+    "check_feller": true,
+    "check_regime_consistency": true,
+    "check_interpolation": true,
+    "check_extrapolation": true,
+    "feller_condition": "2*kappa*theta > sigma_v^2",
+    "description": "Comprehensive conditional validation"
+  },
+  
+  "output": {
+    "results_dir": "../llm_options_assistant/best_model_2025",
+    "model_file": "cvae_model.pt",
+    "training_history": "training_history.csv",
+    "loss_plots": "training_losses.png",
+    "validation_results": "validation_results.json",
+    "description": "All outputs saved to results/"
+  },
+  
+  "generation": {
+    "num_samples": 1000,
+    "sampling_strategy": "historical",
+    "output_file": "../llm_options_assistant/generated_params/generated_conditional_params.pt",
+    "description": "Sample conditioning from historical distribution"
+  }
+}

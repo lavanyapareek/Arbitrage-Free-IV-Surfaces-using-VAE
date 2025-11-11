@@ -1,0 +1,378 @@
+{
+  "low_volatility": {
+    "description": "Calm market, low VIX, stable oil prices",
+    "conditioning": {
+      "crude_oil_30d_mean": -0.5,
+      "crude_oil_7d_mean": -0.5,
+      "unrest_index_yearly": -0.5,
+      "crude_oil": -0.5,
+      "usdinr_quarterly_mean": 0.0,
+      "india_vix_30d_mean": -1.5,
+      "india_vix_7d_mean": -1.5,
+      "us_10y_yield": 0.0
+    },
+    "statistics": {
+      "kappa": {
+        "mean": 0.2213481366634369,
+        "std": 0.1822456568479538,
+        "min": 0.007968559861183167,
+        "max": 1.3820159435272217
+      },
+      "theta": {
+        "mean": 0.035982489585876465,
+        "std": 0.03407534211874008,
+        "min": 0.0009503886103630066,
+        "max": 0.2200673520565033
+      },
+      "sigma_v": {
+        "mean": 0.06488218903541565,
+        "std": 0.04602054879069328,
+        "min": 0.0006990314577706158,
+        "max": 0.1815139353275299
+      },
+      "rho": {
+        "mean": 0.859158992767334,
+        "std": 0.22830581665039062,
+        "min": -0.14821550250053406,
+        "max": 0.9991270303726196
+      },
+      "v0": {
+        "mean": 0.008769519627094269,
+        "std": 0.006776267662644386,
+        "min": 0.0010493654990568757,
+        "max": 0.042541563510894775
+      }
+    },
+    "feller_satisfaction": 97.3,
+    "num_samples": 1000
+  },
+  "moderate_volatility": {
+    "description": "Normal market conditions",
+    "conditioning": {
+      "crude_oil_30d_mean": 0.0,
+      "crude_oil_7d_mean": 0.0,
+      "unrest_index_yearly": 0.0,
+      "crude_oil": 0.0,
+      "usdinr_quarterly_mean": 0.0,
+      "india_vix_30d_mean": 0.0,
+      "india_vix_7d_mean": 0.0,
+      "us_10y_yield": 0.0
+    },
+    "statistics": {
+      "kappa": {
+        "mean": 0.8623229265213013,
+        "std": 0.8293694853782654,
+        "min": 0.03179425746202469,
+        "max": 5.232994079589844
+      },
+      "theta": {
+        "mean": 0.0155979935079813,
+        "std": 0.015069360844790936,
+        "min": 0.0011108837788924575,
+        "max": 0.06781131774187088
+      },
+      "sigma_v": {
+        "mean": 0.0581720694899559,
+        "std": 0.053596895188093185,
+        "min": 0.0009018192067742348,
+        "max": 0.21988694369792938
+      },
+      "rho": {
+        "mean": 0.689712643623352,
+        "std": 0.3008332848548889,
+        "min": -0.8765084743499756,
+        "max": 0.9983680844306946
+      },
+      "v0": {
+        "mean": 0.024925261735916138,
+        "std": 0.01766015775501728,
+        "min": 0.003005879232659936,
+        "max": 0.08572296798229218
+      }
+    },
+    "feller_satisfaction": 95.39999999999999,
+    "num_samples": 1000
+  },
+  "high_volatility": {
+    "description": "Elevated volatility, higher uncertainty",
+    "conditioning": {
+      "crude_oil_30d_mean": 0.5,
+      "crude_oil_7d_mean": 0.5,
+      "unrest_index_yearly": 1.5,
+      "crude_oil": 0.5,
+      "usdinr_quarterly_mean": 0.5,
+      "india_vix_30d_mean": 2.0,
+      "india_vix_7d_mean": 2.0,
+      "us_10y_yield": 0.5
+    },
+    "statistics": {
+      "kappa": {
+        "mean": 1.71356201171875,
+        "std": 0.6699028015136719,
+        "min": 0.4302328824996948,
+        "max": 3.5547142028808594
+      },
+      "theta": {
+        "mean": 0.022766174748539925,
+        "std": 0.016107263043522835,
+        "min": 0.0013466360978782177,
+        "max": 0.07709763944149017
+      },
+      "sigma_v": {
+        "mean": 0.0201497171074152,
+        "std": 0.03327372670173645,
+        "min": 0.0007885361555963755,
+        "max": 0.19056479632854462
+      },
+      "rho": {
+        "mean": 0.31286051869392395,
+        "std": 0.3700752854347229,
+        "min": -0.9461920857429504,
+        "max": 0.9905092120170593
+      },
+      "v0": {
+        "mean": 0.06898804008960724,
+        "std": 0.014921602793037891,
+        "min": 0.012023057788610458,
+        "max": 0.10400407016277313
+      }
+    },
+    "feller_satisfaction": 100.0,
+    "num_samples": 1000
+  },
+  "crisis": {
+    "description": "Market crisis: VIX spike, oil crash, high unrest",
+    "conditioning": {
+      "crude_oil_30d_mean": -1.5,
+      "crude_oil_7d_mean": -1.5,
+      "unrest_index_yearly": 2.0,
+      "crude_oil": -2.0,
+      "usdinr_quarterly_mean": 1.0,
+      "india_vix_30d_mean": 3.0,
+      "india_vix_7d_mean": 3.0,
+      "us_10y_yield": -1.0
+    },
+    "statistics": {
+      "kappa": {
+        "mean": 2.0483145713806152,
+        "std": 0.9005764126777649,
+        "min": 0.7083078026771545,
+        "max": 4.849605560302734
+      },
+      "theta": {
+        "mean": 0.03595877066254616,
+        "std": 0.01965746283531189,
+        "min": 0.002500280039384961,
+        "max": 0.10322664678096771
+      },
+      "sigma_v": {
+        "mean": 0.08221545070409775,
+        "std": 0.07817208021879196,
+        "min": 0.0008033830672502518,
+        "max": 0.4187098443508148
+      },
+      "rho": {
+        "mean": 0.8056523203849792,
+        "std": 0.1491415649652481,
+        "min": -0.030308617278933525,
+        "max": 0.996329128742218
+      },
+      "v0": {
+        "mean": 0.0627870261669159,
+        "std": 0.015086713247001171,
+        "min": 0.014055158942937851,
+        "max": 0.1049390584230423
+      }
+    },
+    "feller_satisfaction": 100.0,
+    "num_samples": 1000
+  },
+  "oil_shock": {
+    "description": "Oil price shock (crash or spike)",
+    "conditioning": {
+      "crude_oil_30d_mean": -2.5,
+      "crude_oil_7d_mean": -2.5,
+      "unrest_index_yearly": 1.0,
+      "crude_oil": -2.5,
+      "usdinr_quarterly_mean": 0.5,
+      "india_vix_30d_mean": 1.5,
+      "india_vix_7d_mean": 1.5,
+      "us_10y_yield": 0.0
+    },
+    "statistics": {
+      "kappa": {
+        "mean": 3.1690845489501953,
+        "std": 1.4391144514083862,
+        "min": 0.7420310974121094,
+        "max": 9.861366271972656
+      },
+      "theta": {
+        "mean": 0.026154933497309685,
+        "std": 0.01182299479842186,
+        "min": 0.00558618875220418,
+        "max": 0.08105422556400299
+      },
+      "sigma_v": {
+        "mean": 0.11737167090177536,
+        "std": 0.06277015060186386,
+        "min": 0.0038424539379775524,
+        "max": 0.3375535309314728
+      },
+      "rho": {
+        "mean": 0.7097605466842651,
+        "std": 0.24329107999801636,
+        "min": -0.3921632170677185,
+        "max": 0.9972257614135742
+      },
+      "v0": {
+        "mean": 0.03326685354113579,
+        "std": 0.015622392296791077,
+        "min": 0.0036440545227378607,
+        "max": 0.09208628535270691
+      }
+    },
+    "feller_satisfaction": 100.0,
+    "num_samples": 1000
+  },
+  "geopolitical_stress": {
+    "description": "High geopolitical uncertainty",
+    "conditioning": {
+      "crude_oil_30d_mean": 0.5,
+      "crude_oil_7d_mean": 0.5,
+      "unrest_index_yearly": 2.5,
+      "crude_oil": 0.5,
+      "usdinr_quarterly_mean": 0.5,
+      "india_vix_30d_mean": 1.5,
+      "india_vix_7d_mean": 1.5,
+      "us_10y_yield": 0.5
+    },
+    "statistics": {
+      "kappa": {
+        "mean": 1.1617412567138672,
+        "std": 0.4439963698387146,
+        "min": 0.2362673282623291,
+        "max": 2.367981433868408
+      },
+      "theta": {
+        "mean": 0.03415971249341965,
+        "std": 0.022398917004466057,
+        "min": 0.00131974124815315,
+        "max": 0.09751009941101074
+      },
+      "sigma_v": {
+        "mean": 0.017284568399190903,
+        "std": 0.030541066080331802,
+        "min": 0.0006577642634510994,
+        "max": 0.22376956045627594
+      },
+      "rho": {
+        "mean": 0.6051550507545471,
+        "std": 0.22866015136241913,
+        "min": -0.18365532159805298,
+        "max": 0.9954827427864075
+      },
+      "v0": {
+        "mean": 0.07538587599992752,
+        "std": 0.015321444720029831,
+        "min": 0.024065088480710983,
+        "max": 0.12052726000547409
+      }
+    },
+    "feller_satisfaction": 100.0,
+    "num_samples": 1000
+  },
+  "rate_hike_cycle": {
+    "description": "Rising interest rates environment",
+    "conditioning": {
+      "crude_oil_30d_mean": 0.0,
+      "crude_oil_7d_mean": 0.0,
+      "unrest_index_yearly": 0.0,
+      "crude_oil": 0.0,
+      "usdinr_quarterly_mean": 0.0,
+      "india_vix_30d_mean": 0.5,
+      "india_vix_7d_mean": 0.5,
+      "us_10y_yield": 1.5
+    },
+    "statistics": {
+      "kappa": {
+        "mean": 3.807654857635498,
+        "std": 1.0158873796463013,
+        "min": 1.3070353269577026,
+        "max": 7.572843074798584
+      },
+      "theta": {
+        "mean": 0.012117879465222359,
+        "std": 0.007144155912101269,
+        "min": 0.0019838528241962194,
+        "max": 0.05002740025520325
+      },
+      "sigma_v": {
+        "mean": 0.0656917542219162,
+        "std": 0.052755482494831085,
+        "min": 0.00104609620757401,
+        "max": 0.269247829914093
+      },
+      "rho": {
+        "mean": -0.4914182126522064,
+        "std": 0.5044981241226196,
+        "min": -0.9972367882728577,
+        "max": 0.9937139749526978
+      },
+      "v0": {
+        "mean": 0.03771393001079559,
+        "std": 0.018862687051296234,
+        "min": 0.0040384698659181595,
+        "max": 0.11137043684720993
+      }
+    },
+    "feller_satisfaction": 100.0,
+    "num_samples": 1000
+  },
+  "fx_stress": {
+    "description": "Currency market stress (USD/INR)",
+    "conditioning": {
+      "crude_oil_30d_mean": 0.0,
+      "crude_oil_7d_mean": 0.0,
+      "unrest_index_yearly": 0.5,
+      "crude_oil": 0.0,
+      "usdinr_quarterly_mean": 1.5,
+      "india_vix_30d_mean": 1.0,
+      "india_vix_7d_mean": 1.0,
+      "us_10y_yield": 0.5
+    },
+    "statistics": {
+      "kappa": {
+        "mean": 1.3307098150253296,
+        "std": 0.644672691822052,
+        "min": 0.2761833369731903,
+        "max": 3.45412540435791
+      },
+      "theta": {
+        "mean": 0.012503765523433685,
+        "std": 0.009952242486178875,
+        "min": 0.00150178256444633,
+        "max": 0.05178144574165344
+      },
+      "sigma_v": {
+        "mean": 0.05750102922320366,
+        "std": 0.05409955233335495,
+        "min": 0.000870353716891259,
+        "max": 0.21522468328475952
+      },
+      "rho": {
+        "mean": 0.6977478265762329,
+        "std": 0.24570463597774506,
+        "min": -0.8623203039169312,
+        "max": 0.9972820281982422
+      },
+      "v0": {
+        "mean": 0.03331002593040466,
+        "std": 0.015971118584275246,
+        "min": 0.005878987722098827,
+        "max": 0.08457745611667633
+      }
+    },
+    "feller_satisfaction": 99.8,
+    "num_samples": 1000
+  }
+}
