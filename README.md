@@ -30,7 +30,7 @@ This project implements a complete pipeline for:
 
 1. **Clone the repository**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/lavanyapareek/Arbitrage-Free-IV-Surfaces-using-VAE
 cd "Arbitrage Free IV Surfaces using VAE"
 ```
 
@@ -134,7 +134,7 @@ Interactive AI analyst powered by Google Gemini:
 
 ## 📈 Results
 
-- **Date Range**: 2015-01-01 to 2025-11-10
+- **Date Range**: 2020-01-01 to 2025-11-10
 - **Grid**: 8 maturities × 21 strikes
 - **Generation Time**: ~30-60 seconds per surface
 - **Validation Rate**: ~30% of samples pass arbitrage checks
@@ -155,15 +155,13 @@ If you use this work, please cite:
 ```bibtex
 @misc{arbitragefree-iv-cvae,
   title={Arbitrage-Free IV Surface Generation using Conditional VAE},
-  author={Your Name},
+  author={Lavanya Pareek},
   year={2025},
   howpublished={\url{https://github.com/yourusername/your-repo}}
 }
 ```
 
-## 📄 License
 
-[Specify your license here - e.g., MIT, Apache 2.0]
 
 ## 🤝 Contributing
 
@@ -172,9 +170,7 @@ Contributions welcome! Please:
 2. Create a feature branch
 3. Submit a pull request
 
-## 📧 Contact
 
-For questions or issues, please open a GitHub issue or contact [your-email].
 
 ## 🙏 Acknowledgments
 
