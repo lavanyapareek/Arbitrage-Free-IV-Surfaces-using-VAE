@@ -49,16 +49,22 @@ output/
 outputs/
 
 # Pickle files (can be large)
-*.pickle
-*.pkl
+# Exclude large data files but keep essential ones
+final_options_data_filled.pickle
+
+# Allow these essential files:
+# !nifty_filtered_surfaces.pickle
+# !nifty_advanced_surfaces.pickle
+# !calibration_single_heston/NIFTY_heston_single_params.pickle
 
 # Model checkpoints and weights (if large)
-*.pt
-*.pth
-*.h5
-*.ckpt
-best_model/
+# Exclude training checkpoints but keep final models
 checkpoints/
+
+# Allow these essential model files:
+# !calibration_single_heston/NIFTY_heston_single_params_tensor.pt
+# !llm_options_assistant/best_model_2025/cvae_model.pt
+# !condtional_vae/best_model/cvae_model.pt
 
 # VAE training outputs
 vae_single_param/
