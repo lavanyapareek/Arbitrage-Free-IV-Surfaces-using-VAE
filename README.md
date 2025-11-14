@@ -220,21 +220,6 @@ Extreme scenario testing shows proper regime response:
 - **Path-Dependent Options**: Barrier options, Asian options with regime-aware dynamics
 
 
-## Citation
-
-If you use this work, please cite:
-
-```bibtex
-@misc{arbitragefree-iv-cvae,
-  title={Arbitrage-Free IV Surface Generation using Conditional VAE},
-  author={Lavanya Pareek},
-  year={2025},
-  institution={IIT Kanpur},
-  course={CS787: Generative AI},
-  howpublished={\url{https://github.com/lavanyapareek/Arbitrage-Free-IV-Surfaces-using-VAE}}
-}
-```
-
 ## Contributing
 
 Contributions welcome! Please:
