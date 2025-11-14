@@ -88,7 +88,7 @@ N_SAMPLES = 100                 # Number of surface samples
 3. Run surface generation (uses pre-trained model)
 4. View results and visualizations
 
-**Full Pipeline (30+ minutes):**
+**Full Pipeline (9+ hours):**
 1. Set `RUN_HESTON_CALIBRATION = True`
 2. Set `RUN_CVAE_TRAINING = True`
 3. Run all sections sequentially
