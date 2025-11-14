@@ -9,7 +9,7 @@ api.json
 gdeltplaypal*.json
 .env
 .env.local
-
+SETUP.md
 # Google Cloud Service Account Keys
 *-*.json
 

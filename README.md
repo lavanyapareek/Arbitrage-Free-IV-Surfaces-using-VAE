@@ -33,7 +33,7 @@ This project implements a complete pipeline for:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/lavanyapareek/Arbitrage-Free-IV-Surfaces-using-VAE
+git clone https://github.com/lavanyapareek/CVAE_arbitrage_free_IV_surfaces
 cd "Arbitrage Free IV Surfaces using VAE"
 ```
 
@@ -72,7 +72,7 @@ The notebook now features user-configurable pipeline control. Simply modify thes
 
 ```python
 # PIPELINE CONTROL - Change False to True to enable components
-RUN_HESTON_CALIBRATION = False  # Heston parameter calibration (10-30 min)
+RUN_HESTON_CALIBRATION = False  # Heston parameter calibration (6-9 hours)
 RUN_CVAE_TRAINING = False       # CVAE model training (10-30 min)
 RUN_SURFACE_GENERATION = True   # IV surface generation (1-2 min)
 RUN_BATCH_GENERATION = False    # Multiple date generation
@@ -179,10 +179,10 @@ Interactive AI analyst powered by Google Gemini:
 ## Results
 
 ### Calibration Performance
-- **Success Rate**: 87% (435/500 days successfully calibrated)
+- **Success Rate**: 100% (500/500 days successfully calibrated)
 - **Average Calibration Time**: 35 seconds per day (15s fast + 20s Wasserstein)
 - **Fit Quality**: RMSE = 0.24 (acceptable for single Heston model)
-- **Feller Satisfaction**: 92% of calibrated parameters satisfy Feller condition
+- **Feller Satisfaction**: 99% of calibrated parameters satisfy Feller condition
 
 ### CVAE Training Results
 - **Training Time**: 45 minutes for 1000 epochs (CPU)
@@ -219,23 +219,6 @@ Extreme scenario testing shows proper regime response:
 - **Exotic Options**: Provide consistent Heston parameters for Monte Carlo pricing
 - **Path-Dependent Options**: Barrier options, Asian options with regime-aware dynamics
 
-## Technical Documentation
-
-A comprehensive 1700+ line LaTeX technical report is included (`technical_report_latex.txt`) covering:
-- Complete mathematical derivations
-- Implementation details with code snippets
-- Performance analysis and validation
-- Comparison with alternative approaches
-- Future research directions
-
-## Security Notes
-
-**IMPORTANT**: Never commit sensitive files:
-- `api.json` - Contains API keys
-- `*credentials*.json` - Google Cloud credentials
-- Large data files (>100 MB)
-
-These are excluded via `.gitignore`. Use `api.json.template` for sharing.
 
 ## Citation
 
@@ -248,7 +231,7 @@ If you use this work, please cite:
   year={2025},
   institution={IIT Kanpur},
   course={CS787: Generative AI},
-  howpublished={\url{https://github.com/lavanyapareek/Arbitrage-Free-IV-Surfaces-using-VAE}}
+  howpublished={\url{https://github.com/lavanyapareek/CVAE_arbitrage_free_IV_surfaces}}
 }
 ```
 
@@ -260,14 +243,9 @@ Contributions welcome! Please:
 3. Submit a pull request with detailed description
 
 ## Acknowledgments
-
-- **IIT Kanpur CS787**: Generative AI course framework
-- **QuantLib**: Heston model implementation and option pricing
-- **Google Gemini**: LLM capabilities for interactive analysis
-- **GDELT Project**: Geopolitical event data
-- **NSE India**: NIFTY 50 options market data
-- **Yahoo Finance**: Market data APIs
-
+- **IIT Kanpur CS787**: Generative AI course
+- **Professor Arnab Bhattacharya** : Course Instructor
+- **Professor Subhajit Roy** : Course Instructor
 ---
 
 **Disclaimer**: This project is for educational and research purposes only. Not financial advice. Use at your own risk.
