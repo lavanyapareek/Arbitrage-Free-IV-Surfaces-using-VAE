@@ -246,6 +246,7 @@ Contributions welcome! Please:
 - **IIT Kanpur CS787**: Generative AI course
 - **Professor Arnab Bhattacharya** : Course Instructor
 - **Professor Subhajit Roy** : Course Instructor
+- **A special Thanks to the TA Bikash Saha**
 ---
 
 **Disclaimer**: This project is for educational and research purposes only. Not financial advice. Use at your own risk.
