@@ -33,7 +33,7 @@ This project implements a complete pipeline for:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/lavanyapareek/CVAE_arbitrage_free_IV_surfaces
+git clone https://github.com/lavanyapareek/Arbitrage-Free-IV-Surfaces-using-VAE
 cd "Arbitrage Free IV Surfaces using VAE"
 ```
 
@@ -231,7 +231,7 @@ If you use this work, please cite:
   year={2025},
   institution={IIT Kanpur},
   course={CS787: Generative AI},
-  howpublished={\url{https://github.com/lavanyapareek/CVAE_arbitrage_free_IV_surfaces}}
+  howpublished={\url{https://github.com/lavanyapareek/Arbitrage-Free-IV-Surfaces-using-VAE}}
 }
 ```
 
